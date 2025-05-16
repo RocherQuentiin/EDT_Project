@@ -37,7 +37,7 @@ public abstract class Utilisateur {
         boolean isAuthenticated = false;
         try {
             java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
-            String sql = "SELECT COUNT(*) FROM utilisateurs WHERE email = ? AND mot_de_passe = ?";
+            String sql = "SELECT COUNT(*) FROM utilisateur WHERE email = ? AND mot_de_passe = ?";
             java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
             stmt.setString(2, motDePasse);
@@ -58,7 +58,7 @@ public abstract class Utilisateur {
         // Vérifier si l'utilisateur existe déjà avant l'inscription
         try {
             java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
-            String checkSql = "SELECT COUNT(*) FROM utilisateurs WHERE email = ?";
+            String checkSql = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";
             java.sql.PreparedStatement checkStmt = conn.prepareStatement(checkSql);
             checkStmt.setString(1, email);
             java.sql.ResultSet rs = checkStmt.executeQuery();
@@ -70,7 +70,7 @@ public abstract class Utilisateur {
             checkStmt.close();
 
             if (!exists) {
-                String sql = "INSERT INTO utilisateurs (nom, email, mot_de_passe) VALUES (?, ?, ?)";
+                String sql = "INSERT INTO utilisateur (nom, email, mot_de_passe) VALUES (?, ?, ?)";
                 java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, nom);
                 stmt.setString(2, email);
