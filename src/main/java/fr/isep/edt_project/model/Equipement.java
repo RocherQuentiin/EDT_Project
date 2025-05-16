@@ -24,5 +24,15 @@ public class Equipement {
             return false;
         }
     }
-    public boolean supprimerEquipements() { return true; }
+    public boolean supprimerEquipements(Connection conn, int id) {
+        String sql = "DELETE FROM equipements WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
