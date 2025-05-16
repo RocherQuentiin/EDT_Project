@@ -7,4 +7,5 @@ public class Administrateur extends Utilisateur {
     public void gererSalles() { }
     public void assignerEnseignant() { }
     public String afficherStatistiques() { return ""; }
+
 }
