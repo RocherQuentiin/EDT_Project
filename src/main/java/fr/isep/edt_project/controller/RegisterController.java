@@ -3,14 +3,13 @@ package fr.isep.edt_project.controller;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class RegisterController {
+public class RegisterController extends Controller {
 
     public PasswordField checkPasswordField;
     @FXML
@@ -27,7 +26,6 @@ public class RegisterController {
     @FXML
     private Button backButton;
 
-    private final String CSV_FILE = "users.csv";
     @FXML
     private void initialize() {
         registerButton.setOnAction(event -> handleRegister());
@@ -76,8 +74,7 @@ public class RegisterController {
     private void goBackToAuth() {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fr/isep/edt_project/login-view.fxml"));
-            stage.getScene().setRoot(fxmlLoader.load());
+            changeScene(stage,"/fr/isep/edt_project/login-view.fxml");
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de revenir à la fenêtre d'authentification !");
         }

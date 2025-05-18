@@ -4,14 +4,13 @@ import java.io.IOException;
 
 import fr.isep.edt_project.model.Utilisateur;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class LoginController {
+public class LoginController extends Controller{
 
     @FXML
     private TextField loginField;
@@ -52,7 +51,7 @@ public class LoginController {
     private void openRegisterWindow() {
         try {
             Stage stage = (Stage) registerButton.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fr/isep/edt_project/register-view.fxml"));            stage.getScene().setRoot(fxmlLoader.load());
+            changeScene(stage, "/fr/isep/edt_project/register-view.fxml");
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir la fenêtre d'inscription !");
         }
