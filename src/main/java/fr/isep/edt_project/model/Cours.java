@@ -10,6 +10,6 @@ public class Cours {
     private Horaire horaire;
     private List<Etudiant> etudiants;
 
-    public void ajouterEtudiant(Etudiant e) { }
-    public void supprimerEtudiant(Etudiant e) { }
+    public void ajouterEtudiant(Etudiant e) { etudiants.add(e); }
+    public void supprimerEtudiant(Etudiant e) { etudiants.remove(e); }
 }
