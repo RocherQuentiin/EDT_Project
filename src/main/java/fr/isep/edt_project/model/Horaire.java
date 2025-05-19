@@ -7,5 +7,7 @@ public class Horaire {
     private LocalDateTime heureDebut;
     private LocalDateTime heureFin;
 
-    public boolean chevauche() { return false; }
+    public boolean chevauche(Horaire autre) {
+        return !(heureFin.isBefore(autre.heureDebut) || heureDebut.isAfter(autre.heureFin));
+    }
 }
