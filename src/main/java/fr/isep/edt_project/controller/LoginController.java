@@ -43,7 +43,6 @@ public class LoginController extends Controller{
         utilisateur = utilisateur.getUserByEmail(email);
 
         if (success) {
-            System.out.println(utilisateur.toString());
             Session.setUtilisateurCourant(utilisateur);
             showAlert(Alert.AlertType.INFORMATION, "Connexion réussie", "Bienvenue " + utilisateur.getNom() + "!");
         try{

@@ -94,12 +94,10 @@ public abstract class Utilisateur {
             stmt.setString(1, email);
             java.sql.ResultSet rs = stmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
-                System.out.println("res = " + rs);
                 this.setEmail(email);
                 this.setNom(rs.getString("nom"));
                 this.motDePasse = rs.getString("mot_de_passe");
                 this.id = rs.getInt("id");
-                System.out.println("this = " + this);
                 rs.close();
                 stmt.close();
                 conn.close();
