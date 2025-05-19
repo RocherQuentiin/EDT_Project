@@ -86,7 +86,44 @@ public abstract class Utilisateur {
         }
     }
 
+    public Utilisateur getUserByEmail(String email){
+        try{
+            java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+            String sql = "SELECT * FROM utilisateur WHERE email = ?";
+            java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, email);
+            java.sql.ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("res = " + rs);
+                this.setEmail(email);
+                this.setNom(rs.getString("nom"));
+                this.motDePasse = rs.getString("mot_de_passe");
+                this.id = rs.getInt("id");
+                System.out.println("this = " + this);
+                rs.close();
+                stmt.close();
+                conn.close();
+                return this;
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return this;
+    }
     public void seDeconnecter() {
         // ... logique de déconnexion ...
+    }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", email='" + email + '\'' +
+                ", motDePasse='" + motDePasse + '\'' +
+                '}';
     }
 }
