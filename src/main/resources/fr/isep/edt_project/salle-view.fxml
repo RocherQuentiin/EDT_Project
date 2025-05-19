@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fr.isep.edt_project.controller.SalleController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.edt_project.controller.SalleController">
 
-    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+    <VBox spacing="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
         <TableView fx:id="tableSalles">
             <columns>
-                <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
-                <TableColumn fx:id="colNumero" text="Numéro" prefWidth="150"/>
-                <TableColumn fx:id="colCapacite" text="Capacité" prefWidth="100"/>
-                <TableColumn fx:id="colLocalisation" text="Localisation" prefWidth="150"/>
+                <TableColumn fx:id="colNumero" prefWidth="150" text="Numéro" />
+                <TableColumn fx:id="colCapacite" prefWidth="136.0" text="Capacité" />
+                <TableColumn fx:id="colLocalisation" prefWidth="293.0" text="Localisation" />
             </columns>
         </TableView>
 
         <HBox spacing="10">
-            <TextField fx:id="numeroField" promptText="Numéro de salle"/>
-            <TextField fx:id="capaciteField" promptText="Capacité"/>
-            <TextField fx:id="localisationField" promptText="Localisation"/>
-            <Button text="Ajouter" onAction="#ajouterSalle"/>
+            <TextField fx:id="numeroField" promptText="Numéro de salle" />
+            <TextField fx:id="capaciteField" promptText="Capacité" />
+            <TextField fx:id="localisationField" promptText="Localisation" />
+            <Button onAction="#ajouterSalle" text="Ajouter" />
         </HBox>
 
         <HBox spacing="10">
-            <Button text="Modifier" onAction="#modifierSalle"/>
-            <Button text="Supprimer" onAction="#supprimerSalle"/>
-            <Button text="Charger" onAction="#chargerSalleSelectionnee"/>
+            <Button onAction="#modifierSalle" text="Modifier" />
+            <Button onAction="#supprimerSalle" text="Supprimer" />
+            <Button onAction="#chargerSalleSelectionnee" text="Charger" />
         </HBox>
     </VBox>
 </AnchorPane>

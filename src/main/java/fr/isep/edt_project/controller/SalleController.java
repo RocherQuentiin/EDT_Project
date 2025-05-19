@@ -9,11 +9,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
+import java.util.List;
+
 public class SalleController {
 
     @FXML
     private TableView<Salle> tableSalles;
-    @FXML private TableColumn<Salle, Integer> colId;
     @FXML private TableColumn<Salle, String> colNumero;
     @FXML private TableColumn<Salle, Integer> colCapacite;
     @FXML private TableColumn<Salle, String> colLocalisation;
@@ -23,15 +24,22 @@ public class SalleController {
     @FXML private TextField localisationField;
 
     private ObservableList<Salle> listeSalles = FXCollections.observableArrayList();
-    private int compteurId = 1;
 
+    // Initialisation du contrôleur
     @FXML
     public void initialize() {
-        colId.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId()).asObject());
+        // Configuration des colonnes
         colNumero.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getNumeroSalle()));
         colCapacite.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getCapacite()).asObject());
         colLocalisation.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getLocalisation()));
 
+        // Chargement initial des données
+        chargerSalles();
+    }
+
+    private void chargerSalles() {
+        List<Salle> salles = Salle.getAllSalles();
+        listeSalles.setAll(salles);
         tableSalles.setItems(listeSalles);
     }
 
@@ -42,15 +50,19 @@ public class SalleController {
             int capacite = Integer.parseInt(capaciteField.getText());
             String localisation = localisationField.getText();
 
-            Salle nouvelleSalle = new Salle(compteurId++, numero, capacite, localisation);
-            listeSalles.add(nouvelleSalle);
+            Salle nouvelleSalle = new Salle(numero, capacite, localisation);
+            if (Salle.ajouterSalle(nouvelleSalle)) {
+                chargerSalles();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Salle ajoutée avec succès !");
+                alert.showAndWait();
+            }
 
             numeroField.clear();
             capaciteField.clear();
             localisationField.clear();
 
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Capacité invalide (doit être un nombre)");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Capacité invalide. Veuillez entrer un nombre.");
             alert.showAndWait();
         }
     }
@@ -59,7 +71,11 @@ public class SalleController {
     public void supprimerSalle() {
         Salle salleSelectionnee = tableSalles.getSelectionModel().getSelectedItem();
         if (salleSelectionnee != null) {
-            listeSalles.remove(salleSelectionnee);
+            if (Salle.supprimerSalle(salleSelectionnee.getId())) {
+                listeSalles.remove(salleSelectionnee);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Salle supprimée avec succès !");
+                alert.showAndWait();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Veuillez sélectionner une salle à supprimer.");
             alert.showAndWait();
@@ -73,9 +89,6 @@ public class SalleController {
             numeroField.setText(salleSelectionnee.getNumeroSalle());
             capaciteField.setText(String.valueOf(salleSelectionnee.getCapacite()));
             localisationField.setText(salleSelectionnee.getLocalisation());
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Veuillez sélectionner une salle à modifier.");
-            alert.showAndWait();
         }
     }
 
@@ -84,21 +97,17 @@ public class SalleController {
         Salle salleSelectionnee = tableSalles.getSelectionModel().getSelectedItem();
         if (salleSelectionnee != null) {
             try {
-                String nouveauNumero = numeroField.getText();
-                int nouvelleCapacite = Integer.parseInt(capaciteField.getText());
-                String nouvelleLocalisation = localisationField.getText();
+                salleSelectionnee.setNumeroSalle(numeroField.getText());
+                salleSelectionnee.setCapacite(Integer.parseInt(capaciteField.getText()));
+                salleSelectionnee.setLocalisation(localisationField.getText());
 
-                salleSelectionnee.setNumeroSalle(nouveauNumero);
-                salleSelectionnee.setCapacite(nouvelleCapacite);
-                salleSelectionnee.setLocalisation(nouvelleLocalisation);
-
-                tableSalles.refresh(); // Rafraîchir la table pour montrer les changements
-
-                numeroField.clear();
-                capaciteField.clear();
-                localisationField.clear();
+                if (salleSelectionnee.modifierSalle()) {
+                    chargerSalles();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Salle modifiée avec succès !");
+                    alert.showAndWait();
+                }
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Capacité invalide (doit être un nombre).");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Capacité invalide. Veuillez entrer un nombre.");
                 alert.showAndWait();
             }
         } else {
