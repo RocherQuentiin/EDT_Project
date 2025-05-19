@@ -2,6 +2,7 @@ package fr.isep.edt_project.controller;
 
 import java.io.IOException;
 
+import fr.isep.edt_project.Session;
 import fr.isep.edt_project.model.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -39,9 +40,18 @@ public class LoginController extends Controller{
         Utilisateur utilisateur = new Utilisateur() {};
 
         boolean success = utilisateur.seConnecter(email, password);
+        utilisateur = utilisateur.getUserByEmail(email);
 
         if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Connexion réussie", "Bienvenue !");
+            System.out.println(utilisateur.toString());
+            Session.setUtilisateurCourant(utilisateur);
+            showAlert(Alert.AlertType.INFORMATION, "Connexion réussie", "Bienvenue " + utilisateur.getNom() + "!");
+        try{
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            changeScene(stage, "/fr/isep/edt_project/home-view.fxml");
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de revenir à la fenêtre d'authentification !");
+        }
             // TODO : Rediriger vers la page principale selon le type d'utilisateur
         } else {
             showAlert(Alert.AlertType.ERROR, "Erreur de connexion", "Email ou mot de passe incorrect.");
