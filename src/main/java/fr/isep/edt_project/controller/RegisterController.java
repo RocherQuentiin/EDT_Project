@@ -74,17 +74,10 @@ public class RegisterController extends Controller {
     private void goBackToAuth() {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
-            changeScene(stage,"/fr/isep/edt_project/login-view.fxml");
+            changeScene(stage,"/fr/isep/edt_project/home-view.fxml");
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de revenir à la fenêtre d'authentification !");
         }
     }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }
