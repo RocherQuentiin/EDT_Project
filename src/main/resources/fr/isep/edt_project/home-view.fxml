@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.isep.edt_project.controller.HomeController"
+            prefHeight="400.0" prefWidth="600.0">
+   <top>
+      <HBox alignment="TOP_RIGHT">
+         <children>
+            <Button fx:id="profileButton" style="-fx-background-radius: 60em;" text="Profile" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+   </top>
+   <center>
+      <StackPane fx:id="centerPane"/>
+   </center>
+</BorderPane>
