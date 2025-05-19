@@ -24,9 +24,14 @@ public class HomeController extends Controller{
     private MenuItem logoutButton;
 
     @FXML
+    private MenuItem messagingToolButton;
+
+
+    @FXML
     public void initialize() {
         profileButton.setOnAction(event -> showProfileView());
         logoutButton.setOnAction(event -> logout());
+        messagingToolButton.setOnAction(event -> openMessagingTool());
     }
 
     private void showProfileView() {
@@ -47,4 +52,16 @@ public class HomeController extends Controller{
             throw new RuntimeException(e);
         }
     }
+
+    private void openMessagingTool() {
+        try {
+            // Charger le fichier FXML de l'outil de messagerie
+            Node messagingView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/messagerie-view.fxml"));
+
+            centerPane.getChildren().setAll(messagingView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
