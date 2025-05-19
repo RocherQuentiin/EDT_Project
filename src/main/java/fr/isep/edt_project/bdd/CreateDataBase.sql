@@ -114,3 +114,5 @@ CREATE TABLE Notification (
     dateEnvoi DATETIME,
     FOREIGN KEY (destinataire_id) REFERENCES Utilisateur(id)
 );
+
+INSERT INTO TypeUtilisateur (nom) VALUES ('Administrateur'), ('Enseignant'), ('Etudiant');
