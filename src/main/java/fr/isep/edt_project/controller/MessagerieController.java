@@ -1,6 +1,7 @@
 package fr.isep.edt_project.controller;
 
 
+import fr.isep.edt_project.model.Notification;
 import fr.isep.edt_project.model.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class MessagerieController {
@@ -39,30 +41,38 @@ public class MessagerieController {
         messageInput.setOnAction(event -> sendMessage());
     }
 
-    /**
-     * Méthode pour envoyer un message
-     */
     private void sendMessage() {
         String selectedUser = userComboBox.getSelectionModel().getSelectedItem();
         String message = messageInput.getText();
 
-        // Vérifiez que l'utilisateur est sélectionné et que le champ de message n'est pas vide
         if (selectedUser == null) {
             messageListView.getItems().add("Erreur : Veuillez sélectionner un utilisateur !");
             return;
         }
 
         if (!message.trim().isEmpty()) {
-            // Ajouter le message à la liste
+            // Ajouter le message dans la liste
             messageListView.getItems().add("Vous à " + selectedUser + " : " + message);
 
             // Nettoyer le champ de saisie
             messageInput.clear();
 
-            // Optionnel : Simuler une réponse
+            // Enregistrer le message dans la base de données
+            int destinataireId = 0;
+            try {
+                destinataireId = utilisateurModel.getIdParEmail(selectedUser);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            if (destinataireId != 0) {
+                Notification.enregistrerMessage(message, destinataireId);
+            }
+
+            // Simuler une réponse pour l'interface
             simulateReply(selectedUser);
         }
     }
+
 
     /**
      * Simuler une réponse de l'utilisateur sélectionné

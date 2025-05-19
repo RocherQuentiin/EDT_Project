@@ -130,7 +130,32 @@ public abstract class Utilisateur {
         // ... logique de déconnexion ...
     }
 
-    public String getNiveau() {
+    public int getIdParEmail(String email) throws SQLException {
+        String query = "SELECT id FROM Utilisateur WHERE email = ?";
+
+        try {
+            java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query);
+
+            // Paramètre de la requête
+            statement.setString(1, email);
+
+            // Exécution de la requête
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1; // Retourne -1 si aucun utilisateur ne correspond
+    }
+
+
+        public String getNiveau() {
         String niveau = null;
         try {
             java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
