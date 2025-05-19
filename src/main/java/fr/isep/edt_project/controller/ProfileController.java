@@ -7,9 +7,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class ProfileController extends Controller{
     @FXML
@@ -37,9 +34,17 @@ public class ProfileController extends Controller{
     @FXML
     private void initialize() {
         editProfilButton.setOnAction(event -> handleEditProfil());
+        backButton.setOnAction(event -> handleBack2Home());
         Utilisateur currentUser = Session.getUtilisateurCourant();
         nameField.setText(currentUser.getNom());
         loginField.setText(currentUser.getEmail());
+    }
+
+    private void handleBack2Home() {
+        if (backButton.getScene() != null && backButton.getScene().getRoot() != null) {
+            // Retire ce panneau du parent (StackPane)
+            ((javafx.scene.layout.Pane) backButton.getScene().getRoot().lookup("#centerPane")).getChildren().clear();
+        }
     }
 
     private void handleEditProfil() {
