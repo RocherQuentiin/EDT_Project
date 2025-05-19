@@ -54,4 +54,56 @@ public class SalleController {
             alert.showAndWait();
         }
     }
+
+    @FXML
+    public void supprimerSalle() {
+        Salle salleSelectionnee = tableSalles.getSelectionModel().getSelectedItem();
+        if (salleSelectionnee != null) {
+            listeSalles.remove(salleSelectionnee);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Veuillez sélectionner une salle à supprimer.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void chargerSalleSelectionnee() {
+        Salle salleSelectionnee = tableSalles.getSelectionModel().getSelectedItem();
+        if (salleSelectionnee != null) {
+            numeroField.setText(salleSelectionnee.getNumeroSalle());
+            capaciteField.setText(String.valueOf(salleSelectionnee.getCapacite()));
+            localisationField.setText(salleSelectionnee.getLocalisation());
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Veuillez sélectionner une salle à modifier.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void modifierSalle() {
+        Salle salleSelectionnee = tableSalles.getSelectionModel().getSelectedItem();
+        if (salleSelectionnee != null) {
+            try {
+                String nouveauNumero = numeroField.getText();
+                int nouvelleCapacite = Integer.parseInt(capaciteField.getText());
+                String nouvelleLocalisation = localisationField.getText();
+
+                salleSelectionnee.setNumeroSalle(nouveauNumero);
+                salleSelectionnee.setCapacite(nouvelleCapacite);
+                salleSelectionnee.setLocalisation(nouvelleLocalisation);
+
+                tableSalles.refresh(); // Rafraîchir la table pour montrer les changements
+
+                numeroField.clear();
+                capaciteField.clear();
+                localisationField.clear();
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Capacité invalide (doit être un nombre).");
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Veuillez sélectionner une salle à modifier.");
+            alert.showAndWait();
+        }
+    }
 }

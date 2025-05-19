@@ -27,6 +27,11 @@
             <TextField fx:id="localisationField" promptText="Localisation"/>
             <Button text="Ajouter" onAction="#ajouterSalle"/>
         </HBox>
-    </VBox>
 
+        <HBox spacing="10">
+            <Button text="Modifier" onAction="#modifierSalle"/>
+            <Button text="Supprimer" onAction="#supprimerSalle"/>
+            <Button text="Charger" onAction="#chargerSalleSelectionnee"/>
+        </HBox>
+    </VBox>
 </AnchorPane>

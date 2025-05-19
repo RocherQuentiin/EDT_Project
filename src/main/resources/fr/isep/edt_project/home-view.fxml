@@ -13,6 +13,7 @@
                   <Menu mnemonicParsing="false" text="Tools">
                       <items>
                           <MenuItem fx:id="messagingToolButton" mnemonicParsing="false" text="Outil de messagerie" />
+                          <MenuItem fx:id="salleToolButton" mnemonicParsing="false" text="Gestion des Salles" visible="false" />
                       </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Edit">

@@ -15,6 +15,9 @@ import java.io.IOException;
 public class HomeController extends Controller{
 
     @FXML
+    public MenuItem salleToolButton;
+
+    @FXML
     private StackPane centerPane;
 
     @FXML
@@ -32,6 +35,12 @@ public class HomeController extends Controller{
         profileButton.setOnAction(event -> showProfileView());
         logoutButton.setOnAction(event -> logout());
         messagingToolButton.setOnAction(event -> openMessagingTool());
+        salleToolButton.setOnAction(event -> openSalleManagementTool());
+
+        // Rendre l'accès à la gestion des salles visible uniquement pour les administrateurs
+        if (Session.getUtilisateurCourant().getNiveau().equals("1")) { // 1 = Niveau administrateur
+            salleToolButton.setVisible(true);
+        }
     }
 
     private void showProfileView() {
@@ -60,6 +69,15 @@ public class HomeController extends Controller{
 
             centerPane.getChildren().setAll(messagingView);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openSalleManagementTool() {
+        try {
+            Node salleView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/salle-view.fxml"));
+            centerPane.getChildren().setAll(salleView);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

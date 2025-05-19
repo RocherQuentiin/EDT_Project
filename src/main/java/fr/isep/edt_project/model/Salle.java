@@ -32,4 +32,16 @@ public class Salle {
     public boolean estDisponible(Horaire h) { return true; }
     public String afficherInfos() { return numeroSalle + " (" + capacite + " places)"; }
     public boolean aConflict(Horaire h) { return false; }
+
+    public void setNumeroSalle(String nouveauNumero) {
+        this.numeroSalle = nouveauNumero;
+    }
+
+    public void setCapacite(int nouvelleCapacite) {
+        this.capacite = nouvelleCapacite;
+    }
+
+    public void setLocalisation(String nouvelleLocalisation) {
+        this.localisation = nouvelleLocalisation;
+    }
 }
