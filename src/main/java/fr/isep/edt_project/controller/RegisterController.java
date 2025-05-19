@@ -2,6 +2,7 @@ package fr.isep.edt_project.controller;
 
 import java.io.IOException;
 
+import fr.isep.edt_project.model.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,6 +27,8 @@ public class RegisterController extends Controller {
     @FXML
     private Button backButton;
 
+    protected Utilisateur utilisateur = new Utilisateur() {};
+
     @FXML
     private void initialize() {
         registerButton.setOnAction(event -> handleRegister());
@@ -41,35 +44,15 @@ public class RegisterController extends Controller {
         showAlert(Alert.AlertType.WARNING, "Erreur", "Veuillez remplir tous les champs !");
         return;
     }
-
-    try (java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection()) {
-        // Vérifier si l'utilisateur existe déjà
-        String checkSql = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";
-        try (java.sql.PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
-            checkStmt.setString(1, login);
-            try (java.sql.ResultSet rs = checkStmt.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    showAlert(Alert.AlertType.ERROR, "Erreur", "Un utilisateur avec cet email existe déjà !");
-                    return;
-                }
-            }
+        boolean isInscrit = utilisateur.inscription(name, login, password);
+        if (isInscrit) {
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Compte créé avec succès !");
+            goBackToAuth();
         }
-
-        // Insérer le nouvel utilisateur
-        String insertSql = "INSERT INTO utilisateur (nom, email, mot_de_passe) VALUES (?, ?, ?)";
-        try (java.sql.PreparedStatement stmt = conn.prepareStatement(insertSql)) {
-            stmt.setString(1, name); // Ici, login comme nom pour l'exemple
-            stmt.setString(2, login); // login = email
-            stmt.setString(3, password);
-            stmt.executeUpdate();
+        else {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'enregistrer le compte dans la base de données !" );
         }
-
-        showAlert(Alert.AlertType.INFORMATION, "Succès", "Compte créé avec succès !");
-        goBackToAuth();
-    } catch (Exception e) {
-        showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'enregistrer le compte dans la base de données !" + e.getMessage());
     }
-}
 
     private void goBackToAuth() {
         try {
