@@ -1,0 +1,15 @@
+.list-view .list-cell {
+    -fx-padding: 5;
+    -fx-background-color: transparent;
+}
+
+.hbox {
+    -fx-background-color: #f8f8f8;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.region {
+    -fx-background-radius: 5;
+    -fx-margin: 5;
+}

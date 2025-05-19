@@ -205,6 +205,33 @@ public abstract class Utilisateur {
         return logins;
     }
 
+    public Utilisateur getUserParId(int id) {
+        try {
+            java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+            String sql = "SELECT * FROM utilisateur WHERE id = ?";
+            java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            java.sql.ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                this.setId(id);
+                this.setNom(rs.getString("nom"));
+                this.setEmail(rs.getString("email"));
+                this.motDePasse = rs.getString("mot_de_passe");
+                this.niveau = rs.getInt("type_utilisateur_id");
+                rs.close();
+                stmt.close();
+                conn.close();
+                return this;
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no user is found or an exception occurs
+    }
+
     @Override
     public String toString() {
         return "Utilisateur{" +
