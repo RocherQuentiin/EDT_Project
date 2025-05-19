@@ -23,6 +23,10 @@ public class Salle {
         this.localisation = localisation;
     }
 
+    public Salle() {
+
+    }
+
     // Getters et Setters
     public int getId() {
         return id;
@@ -119,5 +123,9 @@ public class Salle {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void setId(int salleId) {
+        this.id = salleId;
     }
 }

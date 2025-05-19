@@ -18,6 +18,9 @@ public class HomeController extends Controller{
     public MenuItem salleToolButton;
 
     @FXML
+    public MenuItem coursToolButton;
+
+    @FXML
     private StackPane centerPane;
 
     @FXML
@@ -29,17 +32,27 @@ public class HomeController extends Controller{
     @FXML
     private MenuItem messagingToolButton;
 
-
     @FXML
     public void initialize() {
         profileButton.setOnAction(event -> showProfileView());
         logoutButton.setOnAction(event -> logout());
         messagingToolButton.setOnAction(event -> openMessagingTool());
         salleToolButton.setOnAction(event -> openSalleManagementTool());
+        coursToolButton.setOnAction(event -> openCoursManagementTool());
 
-        // Rendre l'accès à la gestion des salles visible uniquement pour les administrateurs
-        if (Session.getUtilisateurCourant().getNiveau().equals("1")) { // 1 = Niveau administrateur
+        // Rendre accessibles les outils qu'aux administrateurs
+        if (Session.getUtilisateurCourant().getNiveau().equals("1")) { // Niveau administrateur
             salleToolButton.setVisible(true);
+            coursToolButton.setVisible(true);
+        }
+    }
+
+    private void openCoursManagementTool() {
+        try {
+            Node coursView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/cours-view.fxml"));
+            centerPane.getChildren().setAll(coursView);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
