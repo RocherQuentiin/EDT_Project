@@ -1,10 +1,13 @@
 package fr.isep.edt_project.model;
 
+import fr.isep.edt_project.Session;
+
 public abstract class Utilisateur {
     protected int id;
     protected String nom;
     protected String email;
     protected String motDePasse;
+    protected Integer niveau;
 
     public int getId() {
         return id;
@@ -113,6 +116,30 @@ public abstract class Utilisateur {
     }
     public void seDeconnecter() {
         // ... logique de déconnexion ...
+    }
+
+    public String getNiveau() {
+        String niveau = null;
+        try {
+            java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+            String sql = "SELECT type_utilisateur_id FROM utilisateur WHERE id = ?";
+            java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, this.id);
+            java.sql.ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                niveau = rs.getString("type_utilisateur_id");
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return niveau;
+    }
+
+    public void setNiveau(Integer niveau) {
+        this.niveau = niveau;
     }
 
     @Override

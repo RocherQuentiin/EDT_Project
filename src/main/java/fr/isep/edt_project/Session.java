@@ -10,6 +10,10 @@ public class Session {
     }
 
     public static void setUtilisateurCourant(Utilisateur utilisateur) {
+        String niveau = utilisateur.getNiveau();
+        if (niveau==null || niveau.isEmpty()) {
+            utilisateur.setNiveau(3);
+        }
         utilisateurCourant = utilisateur;
     }
 
