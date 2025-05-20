@@ -109,7 +109,7 @@ public class Cours {
         String query = "SELECT c.id AS coursId, c.nom AS coursNom, " +
                 "h.date AS horaireDate, h.heureDebut AS horaireHeureDebut, h.heureFin AS horaireHeureFin, " +
                 "u.id AS enseignantId, u.nom AS enseignantNom, " +
-                "s.id AS salleId, s.numero_salle AS salleNumero " +
+                "s.id AS salleId, s.numero_salle AS salleNumero, s.capacite as salleCapa,  s.localisation as salleLo " +
                 "FROM Cours c " +
                 "JOIN Horaire h ON c.horaire_id = h.id " +
                 "JOIN Salle s ON c.salle_id = s.id " +
@@ -119,7 +119,6 @@ public class Cours {
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-            System.out.println("res = " + preparedStatement);
             while (resultSet.next()) {
                 // Récupérer les données du cours
                 int coursId = resultSet.getInt("coursId");
@@ -140,6 +139,8 @@ public class Cours {
                 Salle salle = new Salle();
                 salle.setId(resultSet.getInt("salleId"));
                 salle.setNumeroSalle(resultSet.getString("salleNumero"));
+                salle.setLocalisation(resultSet.getString("salleLo"));
+                salle.setCapacite(resultSet.getInt("salleCapa"));
 
                 // Créer un objet Cours et l'ajouter à la liste
                 Cours cours = new Cours(coursId, coursNom, enseignant, salle, horaire, null);
