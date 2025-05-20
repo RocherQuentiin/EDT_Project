@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fr.isep.edt_project.controller.MessagerieController"
+            stylesheets="@./css/Messagerie.css">
+    <!-- Zone de la liste des messages -->
+    <center>
+        <VBox spacing="10" alignment="CENTER">
+            <!-- Titre -->
+            <Label text="Outil de messagerie" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <!-- Barre de sélection de conversation -->
+            <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                <Label text="Afficher : " />
+                <!-- Choisir d'afficher tous les messages ou des messages spécifiques -->
+                <ComboBox fx:id="filterComboBox" promptText="Tous les messages" />
+            </HBox>
+
+            <!-- Liste des messages -->
+            <ListView fx:id="messageListView" prefHeight="400.0" prefWidth="600.0">
+                <!-- Les items (HBox) seront ajoutés dynamiquement dans le contrôleur -->
+            </ListView>
+
+        </VBox>
+    </center>
+
+    <!-- Barre d'envoi en bas -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER" >
+            <!-- Liste déroulante pour sélectionner l'utilisateur cible -->
+            <ComboBox fx:id="userComboBox" promptText="Choisissez un utilisateur" />
+
+            <!-- Champ de saisie -->
+            <TextField fx:id="messageInput" promptText="Entrez votre message ici..." HBox.hgrow="ALWAYS" />
+
+            <!-- Bouton d'envoi -->
+            <Button fx:id="sendButton" text="Envoyer" />
+        </HBox>
+    </bottom>
+</BorderPane>

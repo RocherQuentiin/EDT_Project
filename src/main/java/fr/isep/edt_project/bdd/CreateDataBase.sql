@@ -116,3 +116,7 @@ CREATE TABLE Notification (
 );
 
 INSERT INTO TypeUtilisateur (nom) VALUES ('Administrateur'), ('Enseignant'), ('Etudiant');
+
+ALTER TABLE Notification
+    ADD COLUMN expediteur_id INT,
+    ADD FOREIGN KEY (expediteur_id) REFERENCES Utilisateur(id);

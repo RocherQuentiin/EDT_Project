@@ -2,6 +2,12 @@ package fr.isep.edt_project.model;
 
 import fr.isep.edt_project.Session;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Utilisateur {
     protected int id;
     protected String nom;
@@ -46,7 +52,7 @@ public abstract class Utilisateur {
             stmt.setString(2, motDePasse);
             java.sql.ResultSet rs = stmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
-            isAuthenticated = true;
+                isAuthenticated = true;
             }
             rs.close();
             stmt.close();
@@ -57,7 +63,7 @@ public abstract class Utilisateur {
         return isAuthenticated;
     }
 
-    public void inscription(String nom, String email, String motDePasse) {
+    public boolean inscription(String nom, String email, String motDePasse) {
         // Vérifier si l'utilisateur existe déjà avant l'inscription
         try {
             java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
@@ -73,20 +79,26 @@ public abstract class Utilisateur {
             checkStmt.close();
 
             if (!exists) {
-                String sql = "INSERT INTO utilisateur (nom, email, mot_de_passe) VALUES (?, ?, ?)";
+                String sql = "INSERT INTO utilisateur (nom, email, mot_de_passe, type_utilisateur_id) VALUES (?, ?, ?, 3)";
                 java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, nom);
                 stmt.setString(2, email);
                 stmt.setString(3, motDePasse);
+
                 stmt.executeUpdate();
                 stmt.close();
+                conn.close();
+                return true;
             } else {
                 System.out.println("Un utilisateur avec cet email existe déjà.");
+                conn.close();
+                return false;
             }
-            conn.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public Utilisateur getUserByEmail(String email){
@@ -118,7 +130,32 @@ public abstract class Utilisateur {
         // ... logique de déconnexion ...
     }
 
-    public String getNiveau() {
+    public int getIdParEmail(String email) throws SQLException {
+        String query = "SELECT id FROM Utilisateur WHERE email = ?";
+
+        try {
+            java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query);
+
+            // Paramètre de la requête
+            statement.setString(1, email);
+
+            // Exécution de la requête
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1; // Retourne -1 si aucun utilisateur ne correspond
+    }
+
+
+        public String getNiveau() {
         String niveau = null;
         try {
             java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
@@ -140,6 +177,59 @@ public abstract class Utilisateur {
 
     public void setNiveau(Integer niveau) {
         this.niveau = niveau;
+    }
+
+    public List<String> getLoginsNonAdministrateurs() {
+        List<String> logins = new ArrayList<>();
+
+        String query = "SELECT email FROM utilisateur " +
+                "WHERE type_utilisateur_id IS NOT NULL " +
+                "AND type_utilisateur_id != (SELECT id FROM typeutilisateur WHERE nom = 'Administrateur')";
+
+        try (
+                java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+                PreparedStatement statement = conn.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                // Ajouter le login (email) à la liste
+                logins.add(resultSet.getString("email"));
+            }
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return logins;
+    }
+
+    public Utilisateur getUserParId(int id) {
+        try {
+            java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+            String sql = "SELECT * FROM utilisateur WHERE id = ?";
+            java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            java.sql.ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                this.setId(id);
+                this.setNom(rs.getString("nom"));
+                this.setEmail(rs.getString("email"));
+                this.motDePasse = rs.getString("mot_de_passe");
+                this.niveau = rs.getInt("type_utilisateur_id");
+                rs.close();
+                stmt.close();
+                conn.close();
+                return this;
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no user is found or an exception occurs
     }
 
     @Override
