@@ -131,8 +131,8 @@ public class Salle {
 
     @Override
     public String toString() {
-        return "n° '" + numeroSalle +
-                " pour " + capacite +
+        return "n° " + numeroSalle +
+                " pour " + capacite + "étudiants" +
                 " à " + localisation;
     }
 }

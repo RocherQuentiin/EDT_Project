@@ -2,6 +2,7 @@ package fr.isep.edt_project.controller;
 
 import java.io.IOException;
 
+import fr.isep.edt_project.Session;
 import fr.isep.edt_project.model.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -56,8 +57,11 @@ public class RegisterController extends Controller {
 
     private void goBackToAuth() {
         try {
+            Utilisateur utilisateur = new Utilisateur() {};
+            utilisateur = utilisateur.getUserByEmail(loginField.getText());
+            Session.setUtilisateurCourant(utilisateur);
             Stage stage = (Stage) backButton.getScene().getWindow();
-            changeScene(stage,"/fr/isep/edt_project/home-view.fxml");
+            changeScene(stage, "/fr/isep/edt_project/home-view.fxml");
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de revenir à la fenêtre d'authentification !");
         }

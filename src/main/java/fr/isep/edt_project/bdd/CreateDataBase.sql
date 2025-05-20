@@ -18,25 +18,13 @@ CREATE TABLE TypeUtilisateur (
 
 ALTER TABLE Utilisateur
     ADD COLUMN type_utilisateur_id INT,
-    ADD FOREIGN KEY (type_utilisateur_id) REFERENCES TypeUtilisateur(id);
+    ADD FOREIGN KEY (type_utilisateur_id) REFERENCES TypeUtilisateur(id) ON DELETE CASCADE;
 
--- Optionally, you can remove the old type_utilisateur column if not needed:
--- ALTER TABLE Utilisateur DROP COLUMN type_utilisateur;
-
-CREATE TABLE Administrateur (
-    id INT PRIMARY KEY,
-    FOREIGN KEY (id) REFERENCES Utilisateur(id)
-);
-
-CREATE TABLE Enseignant (
-    id INT PRIMARY KEY,
-    FOREIGN KEY (id) REFERENCES Utilisateur(id)
-);
 
 CREATE TABLE Etudiant (
     id INT PRIMARY KEY,
     emploiDuTemps_id INT,
-    FOREIGN KEY (id) REFERENCES Utilisateur(id)
+    FOREIGN KEY (id) REFERENCES Utilisateur(id) ON DELETE CASCADE
     -- emploiDuTemps_id référencé plus bas
 );
 
@@ -59,8 +47,8 @@ CREATE TABLE Salle_Equipement (
     salle_id INT,
     equipement_id INT,
     PRIMARY KEY (salle_id, equipement_id),
-    FOREIGN KEY (salle_id) REFERENCES Salle(id),
-    FOREIGN KEY (equipement_id) REFERENCES Equipement(id)
+    FOREIGN KEY (salle_id) REFERENCES Salle(id) ON DELETE CASCADE,
+    FOREIGN KEY (equipement_id) REFERENCES Equipement(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Horaire (
@@ -76,35 +64,35 @@ CREATE TABLE Cours (
     enseignant_id INT,
     salle_id INT,
     horaire_id INT,
-    FOREIGN KEY (enseignant_id) REFERENCES Enseignant(id),
-    FOREIGN KEY (salle_id) REFERENCES Salle(id),
-    FOREIGN KEY (horaire_id) REFERENCES Horaire(id)
+    FOREIGN KEY (enseignant_id) REFERENCES Utilisateur(id) ON DELETE CASCADE,
+    FOREIGN KEY (salle_id) REFERENCES Salle(id) ON DELETE CASCADE,
+    FOREIGN KEY (horaire_id) REFERENCES Horaire(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Cours_Etudiant (
     cours_id INT,
     etudiant_id INT,
     PRIMARY KEY (cours_id, etudiant_id),
-    FOREIGN KEY (cours_id) REFERENCES Cours(id),
-    FOREIGN KEY (etudiant_id) REFERENCES Etudiant(id)
+    FOREIGN KEY (cours_id) REFERENCES Cours(id) ON DELETE CASCADE,
+    FOREIGN KEY (etudiant_id) REFERENCES Etudiant(id) ON DELETE CASCADE
 );
 
 CREATE TABLE EmploiDuTemps (
     id INT PRIMARY KEY AUTO_INCREMENT,
     utilisateur_id INT,
-    FOREIGN KEY (utilisateur_id) REFERENCES Utilisateur(id)
+    FOREIGN KEY (utilisateur_id) REFERENCES Utilisateur(id) ON DELETE CASCADE
 );
 
 ALTER TABLE Etudiant
     ADD CONSTRAINT fk_emploiDuTemps
-    FOREIGN KEY (emploiDuTemps_id) REFERENCES EmploiDuTemps(id);
+    FOREIGN KEY (emploiDuTemps_id) REFERENCES EmploiDuTemps(id) ON DELETE CASCADE;
 
 CREATE TABLE EmploiDuTemps_Cours (
     emploiDuTemps_id INT,
     cours_id INT,
     PRIMARY KEY (emploiDuTemps_id, cours_id),
-    FOREIGN KEY (emploiDuTemps_id) REFERENCES EmploiDuTemps(id),
-    FOREIGN KEY (cours_id) REFERENCES Cours(id)
+    FOREIGN KEY (emploiDuTemps_id) REFERENCES EmploiDuTemps(id) ON DELETE CASCADE,
+    FOREIGN KEY (cours_id) REFERENCES Cours(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Notification (
@@ -112,11 +100,11 @@ CREATE TABLE Notification (
     message TEXT NOT NULL,
     destinataire_id INT,
     dateEnvoi DATETIME,
-    FOREIGN KEY (destinataire_id) REFERENCES Utilisateur(id)
+    FOREIGN KEY (destinataire_id) REFERENCES Utilisateur(id) ON DELETE CASCADE
 );
 
 INSERT INTO TypeUtilisateur (nom) VALUES ('Administrateur'), ('Enseignant'), ('Etudiant');
 
 ALTER TABLE Notification
     ADD COLUMN expediteur_id INT,
-    ADD FOREIGN KEY (expediteur_id) REFERENCES Utilisateur(id);
+    ADD FOREIGN KEY (expediteur_id) REFERENCES Utilisateur(id) ON DELETE CASCADE;
