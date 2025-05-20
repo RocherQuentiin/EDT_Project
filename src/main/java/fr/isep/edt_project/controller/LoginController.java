@@ -47,7 +47,14 @@ public class LoginController extends Controller{
             showAlert(Alert.AlertType.INFORMATION, "Connexion réussie", "Bienvenue " + utilisateur.getNom() + "!");
         try{
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            changeScene(stage, "/fr/isep/edt_project/home-view.fxml");
+            HomeController controller = changeSceneAndGetController(
+                    stage,
+                    "/fr/isep/edt_project/home-view.fxml",
+                    1000, 700,
+                    "Accueil"
+            );
+            controller.showCalendarView(); //cette méthode permet d'afficher le calendrier
+
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de revenir à la fenêtre d'authentification !");
         }
