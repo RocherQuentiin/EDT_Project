@@ -18,6 +18,9 @@ public class HomeController extends Controller{
     public MenuItem salleToolButton;
 
     @FXML
+    public MenuItem userManagemntButton;
+
+    @FXML
     private StackPane centerPane;
 
     @FXML
@@ -39,11 +42,13 @@ public class HomeController extends Controller{
         messagingToolButton.setOnAction(event -> openMessagingTool());
         salleToolButton.setOnAction(event -> openSalleManagementTool());
         coursToolButton.setOnAction(event -> openCoursManagementTool());
+        userManagemntButton.setOnAction(event -> openUserManagementTool());
 
         // Rendre accessibles les outils qu'aux administrateurs
         if (Session.getUtilisateurCourant().getNiveau().equals("1")) { // Niveau administrateur
             salleToolButton.setVisible(true);
             coursToolButton.setVisible(true);
+            userManagemntButton.setVisible(true);
         }
     }
 
@@ -90,6 +95,15 @@ public class HomeController extends Controller{
         try {
             Node salleView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/salle-view.fxml"));
             centerPane.getChildren().setAll(salleView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openUserManagementTool() {
+        try {
+            Node userManagementView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/user-management-view.fxml"));
+            centerPane.getChildren().setAll(userManagementView);
         } catch (IOException e) {
             e.printStackTrace();
         }

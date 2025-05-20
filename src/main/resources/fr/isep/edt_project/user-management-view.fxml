@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.edt_project.controller.UserManagementController">
+
+    <!-- Zone de recherche (en haut) -->
+    <HBox spacing="10" alignment="CENTER_LEFT" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <Label text="Recherche :" />
+        <TextField fx:id="searchField" promptText="Rechercher..." HBox.hgrow="ALWAYS" />
+        <Button text="Rechercher" onAction="#onSearch" />
+        <Button text="Réinitialiser" onAction="#onResetSearch" />
+    </HBox>
+
+    <!-- TableView pour afficher les utilisateurs (au centre) -->
+    <TableView fx:id="userTable" prefHeight="250" prefWidth="580" AnchorPane.topAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Nom" prefWidth="150" />
+            <TableColumn fx:id="emailColumn" text="Email" prefWidth="200" />
+            <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="100" />
+            <TableColumn fx:id="dateColumn" text="Date Inscription" prefWidth="150" />
+        </columns>
+    </TableView>
+
+    <!-- Panneau d'édition (en bas) -->
+    <VBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Nom :" />
+            <TextField fx:id="nameField" promptText="Modifier le nom" HBox.hgrow="ALWAYS" />
+        </HBox>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Email :" />
+            <TextField fx:id="emailField" promptText="Modifier l'email" HBox.hgrow="ALWAYS" />
+        </HBox>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Rôle :" />
+            <ComboBox fx:id="roleComboBox" promptText="Modifier le rôle" />
+        </HBox>
+        <Button text="Enregistrer les modifications" onAction="#onSaveChanges" />
+    </VBox>
+</AnchorPane>

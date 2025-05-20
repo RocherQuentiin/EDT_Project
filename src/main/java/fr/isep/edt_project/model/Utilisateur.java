@@ -5,6 +5,7 @@ import fr.isep.edt_project.Session;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -240,5 +241,29 @@ public abstract class Utilisateur {
                 ", email='" + email + '\'' +
                 ", motDePasse='" + motDePasse + '\'' +
                 '}';
+    }
+
+    public void setRole(String role) {
+        if (role.equals("Administrateur")) {
+            this.niveau = 1;
+        }
+        else if (role.equals("Enseignants")) {
+            this.niveau = 2;
+        }
+        else {
+            this.niveau = 3;
+        }
+    }
+
+    public String getRole() {
+        if (this.niveau == 1) {
+            return "Administrateur";
+        }
+        else if (this.niveau == 2) {
+            return "Enseignants";
+        }
+        else {
+            return "Etudiants";
+        }
     }
 }
