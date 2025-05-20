@@ -20,18 +20,6 @@ ALTER TABLE Utilisateur
     ADD COLUMN type_utilisateur_id INT,
     ADD FOREIGN KEY (type_utilisateur_id) REFERENCES TypeUtilisateur(id);
 
--- Optionally, you can remove the old type_utilisateur column if not needed:
--- ALTER TABLE Utilisateur DROP COLUMN type_utilisateur;
-
-CREATE TABLE Administrateur (
-    id INT PRIMARY KEY,
-    FOREIGN KEY (id) REFERENCES Utilisateur(id)
-);
-
-CREATE TABLE Enseignant (
-    id INT PRIMARY KEY,
-    FOREIGN KEY (id) REFERENCES Utilisateur(id)
-);
 
 CREATE TABLE Etudiant (
     id INT PRIMARY KEY,
@@ -76,7 +64,7 @@ CREATE TABLE Cours (
     enseignant_id INT,
     salle_id INT,
     horaire_id INT,
-    FOREIGN KEY (enseignant_id) REFERENCES Enseignant(id),
+    FOREIGN KEY (enseignant_id) REFERENCES Utilisateur(id),
     FOREIGN KEY (salle_id) REFERENCES Salle(id),
     FOREIGN KEY (horaire_id) REFERENCES Horaire(id)
 );
