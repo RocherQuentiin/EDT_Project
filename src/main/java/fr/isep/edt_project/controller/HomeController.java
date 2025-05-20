@@ -95,4 +95,16 @@ public class HomeController extends Controller{
         }
     }
 
+    public void showCalendarView() {
+        com.calendarfx.view.CalendarView calendarView = new com.calendarfx.view.CalendarView();
+        calendarView.setShowAddCalendarButton(false);
+        calendarView.setShowPrintButton(false);
+
+        com.calendarfx.model.CalendarSource source = new com.calendarfx.model.CalendarSource("EDT ISEP");
+        calendarView.getCalendarSources().add(source);
+
+        centerPane.getChildren().setAll(calendarView);
+    }
+
+
 }
