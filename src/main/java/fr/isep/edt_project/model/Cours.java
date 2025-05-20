@@ -119,7 +119,7 @@ public class Cours {
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-
+            System.out.println("res = " + preparedStatement);
             while (resultSet.next()) {
                 // Récupérer les données du cours
                 int coursId = resultSet.getInt("coursId");
