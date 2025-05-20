@@ -2,5 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/java/fr/isep/edt_project/bdd/CreateDataBase.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/fr/isep/edt_project/bdd/mock.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/fr/isep/edt_project/model/Cours.java" dialect="GenericSQL" />
   </component>
 </project>

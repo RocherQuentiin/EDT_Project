@@ -4,6 +4,7 @@ import fr.isep.edt_project.model.Cours;
 import fr.isep.edt_project.model.Enseignant;
 import fr.isep.edt_project.model.Salle;
 import fr.isep.edt_project.model.Horaire;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -54,21 +55,27 @@ public class CoursController extends Controller {
 
     @FXML
     public void initialize() {
-
-        // Lier les colonnes à leurs propriétés
+        // Initialise les colonnes
         colNomCours.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colEnseignant.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getEnseignant().getNom()));
-        colSalle.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getSalle().getNumeroSalle()));
-        colHoraire.setCellValueFactory(data -> {
-            Horaire horaire = data.getValue().getHoraire();
-            return new javafx.beans.property.SimpleStringProperty(horaire.getDate() + " " + horaire.getHeureDebut() + " - " + horaire.getHeureFin());
+        colEnseignant.setCellValueFactory(cellData -> {
+            Enseignant enseignant = cellData.getValue().getEnseignant();
+            // Retourne une "StringProperty" qui sera affichée dans la colonne
+            return new SimpleStringProperty(enseignant != null ? enseignant.getNom() : "");
         });
 
-        // Charger les listes pour les enseignants et les salles
-        chargerListes();
+        colSalle.setCellValueFactory(new PropertyValueFactory<>("salle"));
+        colHoraire.setCellValueFactory(new PropertyValueFactory<>("horaire"));
 
-        // Charger les cours dans la table
+        // Charge les données dans la table
+        chargerListes();
         chargerCours();
+
+        // Ajoute un listener pour remplir les champs lors de la sélection
+        tableCours.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                remplirChamps(newValue);
+            }
+        });
     }
 
     private void chargerListes() {
@@ -137,50 +144,38 @@ public class CoursController extends Controller {
 
     @FXML
     public void modifierCours() {
+        // Récupère le cours sélectionné
         Cours coursSelectionne = tableCours.getSelectionModel().getSelectedItem();
 
-        if (coursSelectionne == null) {
-            showAlert( Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner un cours à modifier.");
-            return;
-        }
+        if (coursSelectionne != null) {
+            // Met à jour les données du cours sélectionné
+            coursSelectionne.setNom(nomField.getText());
+            coursSelectionne.setEnseignant(enseignantBox.getValue());
+            coursSelectionne.setSalle(salleBox.getValue());
 
-        try {
-            // Récupérer les nouvelles valeurs saisies
-            String nom = nomField.getText();
-            Enseignant enseignant = enseignantBox.getValue();
-            Salle salle = salleBox.getValue();
-            LocalDate date = datePicker.getValue();
-            LocalTime heureDebut = LocalTime.parse(heureDebutField.getText());
-            LocalTime heureFin = LocalTime.parse(heureFinField.getText());
-
-            // Valider les champs
-            if (nom.isEmpty() || enseignant == null || salle == null || date == null || heureDebut == null || heureFin == null) {
-                showAlert(Alert.AlertType.WARNING, "Erreur", "Veuillez remplir tous les champs correctement.");
-                return;
+            // Met à jour l'horaire si les champs sont remplis
+            if (datePicker.getValue() != null && !heureDebutField.getText().isEmpty() && !heureFinField.getText().isEmpty()) {
+                Horaire horaire = new Horaire(
+                        datePicker.getValue(),
+                        LocalTime.parse(heureDebutField.getText()),
+                        LocalTime.parse(heureFinField.getText())
+                );
+                coursSelectionne.setHoraire(horaire);
             }
 
-            if (heureDebut.isAfter(heureFin)) {
-                showAlert(Alert.AlertType.WARNING, "Erreur", "L'heure de début doit être avant l'heure de fin.");
-                return;
-            }
+            // Sauvegarde les modifications en base de données
+            boolean success = Cours.modifierCours(coursSelectionne);
 
-            // Mettre à jour les valeurs de l'objet cours sélectionné
-            coursSelectionne.setNom(nom);
-            coursSelectionne.setEnseignant(enseignant);
-            coursSelectionne.setSalle(salle);
-            coursSelectionne.setHoraire(new Horaire(date, heureDebut, heureFin));
-
-            // Appeler la méthode de mise à jour
-            if (Cours.modifierCours(coursSelectionne)) {
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Cours modifié avec succès.");
-                chargerCours(); // Recharger les données dans la table
+            if (success) {
+                // Recharge la table après modification
+                chargerCours();
                 resetChamps();
             } else {
-                showAlert( Alert.AlertType.ERROR, "Erreur", "La modification du cours a échoué.");
+                // Gérer les erreurs (par exemple, afficher une alerte pour l'utilisateur)
+                System.err.println("Erreur lors de la mise à jour du cours.");
             }
-
-        } catch (Exception e) {
-            showAlert( Alert.AlertType.ERROR, "Erreur", "Format invalide pour les heures (HH:mm).");
+        } else {
+            System.err.println("Aucun cours sélectionné !");
         }
     }
 
@@ -207,6 +202,28 @@ public class CoursController extends Controller {
             } else {
                 showAlert( Alert.AlertType.ERROR, "Erreur", "La suppression du cours a échoué.");
             }
+        }
+    }
+
+    private void remplirChamps(Cours cours) {
+        // Remplir le champ du nom
+        nomField.setText(cours.getNom());
+
+        // Sélectionner l'enseignant dans la ComboBox
+        enseignantBox.getSelectionModel().select(cours.getEnseignant());
+
+        // Sélectionner la salle dans la ComboBox
+        salleBox.getSelectionModel().select(cours.getSalle());
+
+        // Remplir la DatePicker avec la date associée à l'horaire du cours
+        if (cours.getHoraire() != null) {
+            datePicker.setValue(cours.getHoraire().getDate());
+            heureDebutField.setText(cours.getHoraire().getHeureDebut().toString());
+            heureFinField.setText(cours.getHoraire().getHeureFin().toString());
+        } else {
+            datePicker.setValue(null);
+            heureDebutField.clear();
+            heureFinField.clear();
         }
     }
 

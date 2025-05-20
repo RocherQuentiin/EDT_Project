@@ -17,7 +17,6 @@ public class Enseignant extends Utilisateur {
         String query = "SELECT u.id, u.nom, u.email, u.date_inscription " +
                 "FROM Utilisateur u " +
                 "JOIN TypeUtilisateur t ON u.type_utilisateur_id = t.id " +
-                "JOIN Enseignant e ON e.id = u.id " +
                 "WHERE t.nom = 'Enseignant'";
 
         try (Connection connection = DataBaseConnection.getConnection();
@@ -48,5 +47,10 @@ public class Enseignant extends Utilisateur {
 
     public boolean notifierAnomalie() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return  nom;
     }
 }
