@@ -4,6 +4,7 @@ import fr.isep.edt_project.model.Cours;
 import fr.isep.edt_project.model.Enseignant;
 import fr.isep.edt_project.model.Salle;
 import fr.isep.edt_project.model.Horaire;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -56,7 +57,12 @@ public class CoursController extends Controller {
     public void initialize() {
         // Initialise les colonnes
         colNomCours.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colEnseignant.setCellValueFactory(new PropertyValueFactory<>("enseignant"));
+        colEnseignant.setCellValueFactory(cellData -> {
+            Enseignant enseignant = cellData.getValue().getEnseignant();
+            // Retourne une "StringProperty" qui sera affichée dans la colonne
+            return new SimpleStringProperty(enseignant != null ? enseignant.getNom() : "");
+        });
+
         colSalle.setCellValueFactory(new PropertyValueFactory<>("salle"));
         colHoraire.setCellValueFactory(new PropertyValueFactory<>("horaire"));
 
