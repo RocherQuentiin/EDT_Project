@@ -5,37 +5,38 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.edt_project.controller.HomeController">
-   <top>
-      <HBox alignment="TOP_RIGHT">
-         <children>
-            <MenuBar>
-              <menus>
-                  <Menu mnemonicParsing="false" text="Tools">
-                      <items>
-                          <MenuItem fx:id="messagingToolButton" mnemonicParsing="false" text="Outil de messagerie" />
-                          <MenuItem fx:id="salleToolButton" mnemonicParsing="false" text="Gestion des Salles" visible="false" />
-                      </items>
-                  </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Profil">
-                  <items>
-                    <MenuItem fx:id="profileButton" mnemonicParsing="false" text="Modification" />
-                    <MenuItem fx:id="logoutButton" mnemonicParsing="false" text="Déconnexion" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </HBox>
-   </top>
-   <center>
-      <StackPane fx:id="centerPane" />
-   </center>
+    <top>
+        <HBox alignment="TOP_RIGHT">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="Tools">
+                            <items>
+                                <MenuItem fx:id="messagingToolButton" mnemonicParsing="false" text="Outil de messagerie" />
+                                <MenuItem fx:id="salleToolButton" mnemonicParsing="false" text="Gestion des Salles" visible="false" />
+                                <MenuItem fx:id="coursToolButton" mnemonicParsing="false" text="Gestion des Cours" visible="false" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Profil">
+                            <items>
+                                <MenuItem fx:id="profileButton" mnemonicParsing="false" text="Modification" />
+                                <MenuItem fx:id="logoutButton" mnemonicParsing="false" text="Déconnexion" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </HBox>
+    </top>
+    <center>
+        <StackPane fx:id="centerPane" />
+    </center>
 </BorderPane>

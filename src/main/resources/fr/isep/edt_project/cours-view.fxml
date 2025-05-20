@@ -10,5 +10,32 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="fr.isep.edt_project.controller.CoursController"
             prefHeight="400.0" prefWidth="600.0">
+    <VBox spacing="15" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+        <TableView fx:id="tableCours">
+            <columns>
+                <TableColumn fx:id="colNomCours" text="Nom du cours" prefWidth="150" />
+                <TableColumn fx:id="colEnseignant" text="Enseignant" prefWidth="120" />
+                <TableColumn fx:id="colSalle" text="Salle" prefWidth="120" />
+                <TableColumn fx:id="colHoraire" text="Horaire" prefWidth="150" />
+            </columns>
+        </TableView>
 
+        <HBox spacing="10">
+            <TextField fx:id="nomField" promptText="Nom du Cours" />
+            <ComboBox fx:id="enseignantBox" promptText="Enseignant" />
+            <ComboBox fx:id="salleBox" promptText="Salle" />
+        </HBox>
+
+        <HBox spacing="10">
+            <DatePicker fx:id="datePicker" promptText="Date du cours" />
+            <TextField fx:id="heureDebutField" promptText="Heure de début (HH:mm)" />
+            <TextField fx:id="heureFinField" promptText="Heure de fin (HH:mm)" />
+        </HBox>
+
+        <HBox spacing="10">
+            <Button text="Ajouter" onAction="#ajouterCours" />
+            <Button text="Modifier" onAction="#modifierCours" />
+            <Button text="Supprimer" onAction="#supprimerCours" />
+        </HBox>
+    </VBox>
 </AnchorPane>
