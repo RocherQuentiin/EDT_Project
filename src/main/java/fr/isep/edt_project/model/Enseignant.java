@@ -48,4 +48,9 @@ public class Enseignant extends Utilisateur {
     public boolean notifierAnomalie() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return  nom;
+    }
 }
