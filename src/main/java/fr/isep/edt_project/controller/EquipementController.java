@@ -35,25 +35,51 @@ public class EquipementController {
 
     @FXML
     private void initialize() {
-        // Liaison des colonnes avec les attributs de l'équipement
+        // Initialisation des colonnes de la table
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colNumero.setCellValueFactory(new PropertyValueFactory<>("numeroEquipement"));
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
+        // Charger les données dans la table
         chargerEquipements();
+
+        // Ajouter un écouteur pour les clics sur une ligne
+        tableEquipements.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> remplirChampsAvecSelection(newValue)
+        );
     }
 
     private void chargerEquipements() {
-        // Charger la liste des équipements depuis la base de données
+        // Récupérer les équipements depuis la base de données et remplir la liste observable
         List<Equipement> equipements = Equipement.getAllEquipements();
-        equipementList.setAll(equipements);
+        if (equipements != null) {
+            equipementList.setAll(equipements);
+        }
+
+        // Associer la liste au TableView
         tableEquipements.setItems(equipementList);
+    }
+
+    /**
+     * Remplit les champs avec les données de l'équipement sélectionné dans la table.
+     *
+     * @param equipement L'équipement sélectionné.
+     */
+    private void remplirChampsAvecSelection(Equipement equipement) {
+        if (equipement != null) {
+            nomField.setText(equipement.getNom());
+            numeroField.setText(equipement.getNumeroEquipement());
+            typeField.setText(equipement.getType());
+            stockField.setText(String.valueOf(equipement.getStock()));
+        } else {
+            // Réinitialiser les champs si aucune ligne n'est sélectionnée
+            resetChamps();
+        }
     }
 
     @FXML
     private void ajouterEquipement() {
-        // Ajouter un nouvel équipement
         String nom = nomField.getText();
         String numero = numeroField.getText();
         String type = typeField.getText();
@@ -62,35 +88,56 @@ public class EquipementController {
         try {
             stock = Integer.parseInt(stockField.getText());
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Le stock doit être un nombre entier.");
+            showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Veuillez entrer un nombre valide pour le stock.");
             return;
         }
 
         Equipement equipement = new Equipement(nom, numero, type, stock);
         if (equipement.ajouterEquipements()) {
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Équipement ajouté avec succès.");
-            chargerEquipements();
+            equipementList.add(equipement);
             resetChamps();
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Équipement ajouté avec succès.");
         } else {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ajouter l'équipement.");
+            showAlert(Alert.AlertType.ERROR, "Échec", "Impossible d'ajouter l'équipement.");
         }
     }
 
     @FXML
     private void supprimerEquipement() {
-        // Supprimer l'équipement sélectionné
-        Equipement equipement = tableEquipements.getSelectionModel().getSelectedItem();
-
-        if (equipement == null) {
-            showAlert(Alert.AlertType.WARNING, "Avertissement", "Veuillez sélectionner un équipement à supprimer.");
-            return;
-        }
-
-        if (equipement.supprimerEquipements(equipement.getId())) {
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Équipement supprimé avec succès.");
-            chargerEquipements();
+        Equipement selectedEquipement = tableEquipements.getSelectionModel().getSelectedItem();
+        if (selectedEquipement != null) {
+            if (selectedEquipement.supprimerEquipements(selectedEquipement.getId())) {
+                equipementList.remove(selectedEquipement);
+                resetChamps();
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Équipement supprimé avec succès.");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Échec", "Impossible de supprimer l'équipement.");
+            }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer l'équipement.");
+            showAlert(Alert.AlertType.WARNING, "Attention", "Veuillez sélectionner un équipement à supprimer.");
+        }
+    }
+
+    @FXML
+    private void modifierEquipement() {
+        Equipement equipement = tableEquipements.getSelectionModel().getSelectedItem();
+        if (equipement != null) {
+            equipement.setNom(nomField.getText());
+            equipement.setNumeroEquipement(numeroField.getText());
+            equipement.setType(typeField.getText());
+
+            try {
+                equipement.setStock(Integer.parseInt(stockField.getText()));
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de saisie", "Veuillez entrer un nombre valide pour le stock.");
+                return;
+            }
+
+            // Rafraîchir la vue pour voir les modifications
+            tableEquipements.refresh();
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Équipement modifié avec succès.");
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Attention", "Veuillez sélectionner un équipement à modifier.");
         }
     }
 
@@ -99,42 +146,6 @@ public class EquipementController {
         numeroField.clear();
         typeField.clear();
         stockField.clear();
-    }
-
-    @FXML
-    private void modifierEquipement() {
-        // Modifier l'équipement sélectionné
-        Equipement equipement = tableEquipements.getSelectionModel().getSelectedItem();
-
-        if (equipement == null) {
-            showAlert(Alert.AlertType.WARNING, "Avertissement", "Veuillez sélectionner un équipement à modifier.");
-            return;
-        }
-
-        String nom = nomField.getText();
-        String numero = numeroField.getText();
-        String type = typeField.getText();
-        int stock;
-
-        try {
-            stock = Integer.parseInt(stockField.getText());
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Le stock doit être un nombre entier.");
-            return;
-        }
-
-        equipement.setNom(nom);
-        equipement.setNumeroEquipement(numero);
-        equipement.setType(type);
-        equipement.setStock(stock);
-
-        if (equipement.ajouterEquipements()) {
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Équipement modifié avec succès.");
-            chargerEquipements();
-            resetChamps();
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de modifier l'équipement.");
-        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
