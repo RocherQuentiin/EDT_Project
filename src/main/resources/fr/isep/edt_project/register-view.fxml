@@ -3,7 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="10" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.edt_project.controller.RegisterController">
+<VBox alignment="CENTER" spacing="10" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.edt_project.controller.RegisterController"
+      stylesheets="@/register-style.css">
     <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="S'inscrire" />
     <Label text="Nom" />
     <TextField fx:id="nameField" promptText="Entrez votre nom" />

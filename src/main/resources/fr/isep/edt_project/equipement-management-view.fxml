@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.edt_project.controller.EquipementController">
+
+    <VBox spacing="10" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <!-- TableView affichant la liste des équipements -->
+        <TableView fx:id="tableEquipements">
+            <columns>
+                <TableColumn fx:id="colNom" prefWidth="150.0" text="Nom" />
+                <TableColumn fx:id="colNumero" prefWidth="120.0" text="Numéro" />
+                <TableColumn fx:id="colType" prefWidth="120.0" text="Type" />
+                <TableColumn fx:id="colStock" prefWidth="100.0" text="Stock" />
+            </columns>
+        </TableView>
+
+        <!-- Zone de saisie et de gestion -->
+        <HBox spacing="10">
+            <TextField fx:id="nomField" promptText="Nom de l'équipement" />
+            <TextField fx:id="numeroField" promptText="Numéro d'équipement" />
+            <TextField fx:id="typeField" promptText="Type d'équipement" />
+            <TextField fx:id="stockField" promptText="Stock disponible" />
+        </HBox>
+
+        <!-- Boutons d'action -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Ajouter" onAction="#ajouterEquipement" />
+            <Button text="Modifier" onAction="#modifierEquipement" />
+            <Button text="Supprimer" onAction="#supprimerEquipement" />
+        </HBox>
+    </VBox>
+</AnchorPane>

@@ -1,0 +1,96 @@
+/* ---- Styles généraux ---- */
+.root {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f7f9fc; /* Fond clair */
+}
+
+/* ---- Conteneur principal (VBox) ---- */
+.vbox {
+    -fx-spacing: 15px;
+    -fx-padding: 20px;
+    -fx-alignment: center;
+    -fx-background-color: #ffffff; /* Arrière-plan blanc pour la boîte */
+    -fx-border-color: #dee2e6; /* Bordure gris claire */
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px; /* Coins arrondis */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 0); /* Ombre douce */
+}
+
+/* ---- Labels ---- */
+.label {
+    -fx-text-fill: #394867; /* Couleur de texte sombre pour un bon contraste */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* Titre principal */
+.label:first-of-type {
+    -fx-font-size: 18px; /* Plus grand pour le titre */
+    -fx-text-fill: #5a5af3; /* Couleur bleue attrayante pour le titre */
+}
+
+/* ---- Champs de texte et mot de passe ---- */
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 5px;
+    -fx-border-color: #ced4da; /* Bordure gris clair */
+    -fx-border-width: 1px;
+    -fx-padding: 8px; /* Espacement interne */
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #adb5bd; /* Couleur du texte d'indication */
+}
+
+/* Effets de focus et survol */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #0056b3; /* Couleur bleue au focus */
+    -fx-background-color: #eaf4ff; /* Fond bleu clair pendant le focus */
+}
+
+.text-field:hover, .password-field:hover {
+    -fx-border-color: #008cba; /* Bordure bleue douce au survol */
+}
+
+/* ---- Boutons ---- */
+.button {
+    -fx-background-color: #5a5af3; /* Couleur bleue pour les boutons */
+    -fx-text-fill: #ffffff; /* Texte blanc */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 15px; /* Espacement interne */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 0); /* Effet d'ombre douce */
+}
+
+/* Effets au survol et appui */
+.button:hover {
+    -fx-background-color: #3e3eda; /* Bleu plus foncé au survol */
+}
+
+.button:pressed {
+    -fx-background-color: #2c2cac; /* Bleu encore plus sombre en appui */
+    -fx-effect: none; /* Supprime l'ombre pendant le clic */
+}
+
+/* Bouton "Je n'ai pas un compte" spécifique */
+#registerButton {
+    -fx-background-color: #e4e4e4; /* Fond gris clair */
+    -fx-text-fill: #434343; /* Texte gris foncé */
+    -fx-font-weight: normal;
+}
+
+#registerButton:hover {
+    -fx-background-color: #d6d6d6; /* Fond gris légèrement plus foncé au survol */
+}
+
+#registerButton:pressed {
+    -fx-background-color: #bfbfbf; /* Fond gris foncé au clic */
+}
+
+/* ---- Animation pour les interactions ---- */
+.button, .text-field, .password-field {
+    -fx-transition: all 0.3s ease-in-out; /* Transition fluide pour les interactions */
+}
