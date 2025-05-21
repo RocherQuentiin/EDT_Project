@@ -36,6 +36,15 @@ public class RegisterController extends Controller {
         backButton.setOnAction(event -> goBackToAuth());
     }
 
+    private void goBackToAuth() {
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        try {
+            changeScene(stage, "/fr/isep/edt_project/login-view.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void handleRegister() {
     String name = nameField.getText();
     String login = loginField.getText();
@@ -48,14 +57,14 @@ public class RegisterController extends Controller {
         boolean isInscrit = utilisateur.inscription(name, login, password);
         if (isInscrit) {
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Compte créé avec succès !");
-            goBackToAuth();
+            goBackToHome();
         }
         else {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'enregistrer le compte dans la base de données !" );
         }
     }
 
-    private void goBackToAuth() {
+    private void goBackToHome() {
         try {
             Utilisateur utilisateur = new Utilisateur() {};
             utilisateur = utilisateur.getUserByEmail(loginField.getText());
