@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
+import fr.isep.edt_project.bdd.DataBaseConnection;
 
 public abstract class Utilisateur {
     protected int id;
@@ -101,34 +103,41 @@ public abstract class Utilisateur {
         return false;
     }
 
-    public Utilisateur getUserByEmail(String email){
-        try{
-            java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
-            String sql = "SELECT * FROM utilisateur WHERE email = ?";
-            java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+    public static Utilisateur getUserByEmail(String email) {
+        Utilisateur utilisateur = null;
+
+        String sql = "SELECT * FROM utilisateur WHERE email = ?";
+
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, email);
-            java.sql.ResultSet rs = stmt.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                this.setEmail(email);
-                this.setNom(rs.getString("nom"));
-                this.motDePasse = rs.getString("mot_de_passe");
-                this.id = rs.getInt("id");
-                rs.close();
-                stmt.close();
-                conn.close();
-                return this;
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // On regarde si c’est un étudiant ou enseignant via type_utilisateur_id
+                int typeId = rs.getInt("type_utilisateur_id");
+                if (typeId == 3) {
+                    utilisateur = new Etudiant();
+                } else if (typeId == 2) {
+                    utilisateur = new Enseignant();
+                } else {
+                    utilisateur = new Utilisateur() {};
+                }
+
+                utilisateur.setId(rs.getInt("id"));
+                utilisateur.setNom(rs.getString("nom"));
+                utilisateur.setEmail(rs.getString("email"));
+                utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
+                utilisateur.setNiveau(typeId);
             }
-            rs.close();
-            stmt.close();
-            conn.close();
-        }catch (Exception e){
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return this;
+        return utilisateur;
     }
-    public void seDeconnecter() {
-        // ... logique de déconnexion ...
-    }
+
 
     public int getIdParEmail(String email) throws SQLException {
         String query = "SELECT id FROM Utilisateur WHERE email = ?";
@@ -241,4 +250,5 @@ public abstract class Utilisateur {
                 ", motDePasse='" + motDePasse + '\'' +
                 '}';
     }
+
 }
