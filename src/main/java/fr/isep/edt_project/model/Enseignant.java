@@ -12,6 +12,15 @@ import java.util.List;
 public class Enseignant extends Utilisateur {
     private ArrayList<Cours> coursEnseignes;
 
+    public Enseignant() {
+
+    }
+
+    public Enseignant(int id, String nom) {
+        this.setId(id);
+        this.setNom(nom);
+    }
+
     public static List<Enseignant> getAllEnseignants() {
         List<Enseignant> enseignants = new ArrayList<>();
         String query = "SELECT u.id, u.nom, u.email, u.date_inscription " +

@@ -26,6 +26,10 @@ public class Cours {
         this.etudiants = etudiants;
     }
 
+    public Cours() {
+
+    }
+
     // Getters et setters
     public int getId() {
         return id;
@@ -202,4 +206,53 @@ public class Cours {
             return false;
         }
     }
+
+    public static List<Cours> getCoursByEtudiantId(int etudiantId) {
+        List<Cours> coursList = new ArrayList<>();
+        String query = "SELECT c.id, c.nom, h.date, h.heureDebut, h.heureFin, " +
+                "u.id AS enseignantId, u.nom AS enseignantNom, " +
+                "s.id AS salleId, s.numero_salle, s.capacite, s.localisation " +
+                "FROM cours c " +
+                "JOIN cours_etudiant ce ON c.id = ce.cours_id " +
+                "JOIN horaire h ON c.horaire_id = h.id " +
+                "JOIN salle s ON c.salle_id = s.id " +
+                "JOIN utilisateur u ON c.enseignant_id = u.id " +
+                "WHERE ce.etudiant_id = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, etudiantId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Cours cours = new Cours(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        new Enseignant(rs.getInt("enseignantId"), rs.getString("enseignantNom")),
+                        new Salle(
+                                rs.getInt("salleId"),
+                                rs.getString("numero_salle"),
+                                rs.getInt("capacite"),
+                                rs.getString("localisation")
+                        ),
+                        new Horaire(
+                                rs.getDate("date").toLocalDate(),
+                                rs.getTime("heureDebut").toLocalTime(),
+                                rs.getTime("heureFin").toLocalTime()
+                        ),
+
+                null
+                );
+
+                coursList.add(cours);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return coursList;
+    }
+
 }

@@ -124,4 +124,14 @@ public class HomeController extends Controller{
         }
     }
 
+    public void showCalendarView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/isep/edt_project/emploidutemps-view.fxml"));
+            Node emploiView = loader.load();
+            centerPane.getChildren().setAll(emploiView);
+            System.out.println("Emploi du temps affiché !");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
