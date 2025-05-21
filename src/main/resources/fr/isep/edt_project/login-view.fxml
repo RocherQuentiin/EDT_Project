@@ -6,7 +6,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.edt_project.controller.LoginController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fr.isep.edt_project.controller.LoginController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 20;"
+      stylesheets="@css/login-style.css"
+        prefWidth="500" prefHeight="700">
     <Label text="Formulaire d'authentification" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
     <Label text="Login (votre email) :" />
     <TextField fx:id="loginField" promptText="Entrez votre email" />

@@ -3,19 +3,22 @@ package fr.isep.edt_project.controller;
 import fr.isep.edt_project.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class HomeController extends Controller{
 
     @FXML
     public MenuItem salleToolButton;
+
+    @FXML
+    public MenuItem userManagemntButton;
+
+    @FXML
+    public MenuItem equipementToolButton;
 
     @FXML
     private StackPane centerPane;
@@ -39,13 +42,27 @@ public class HomeController extends Controller{
         messagingToolButton.setOnAction(event -> openMessagingTool());
         salleToolButton.setOnAction(event -> openSalleManagementTool());
         coursToolButton.setOnAction(event -> openCoursManagementTool());
+        userManagemntButton.setOnAction(event -> openUserManagementTool());
+        equipementToolButton.setOnAction(event -> openEquipementManagementTool());
+
 
         // Rendre accessibles les outils qu'aux administrateurs
         if (Session.getUtilisateurCourant().getNiveau().equals("1")) { // Niveau administrateur
             salleToolButton.setVisible(true);
             coursToolButton.setVisible(true);
+            userManagemntButton.setVisible(true);
         }
     }
+
+    private void openEquipementManagementTool() {
+        try {
+            Node equipementView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/equipement-management-view.fxml"));
+            centerPane.getChildren().setAll(equipementView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void openCoursManagementTool() {
         try {
@@ -95,6 +112,15 @@ public class HomeController extends Controller{
         }
     }
 
+    private void openUserManagementTool() {
+        try {
+            Node userManagementView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/user-management-view.fxml"));
+            centerPane.getChildren().setAll(userManagementView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void showCalendarView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/isep/edt_project/emploidutemps-view.fxml"));
@@ -105,5 +131,4 @@ public class HomeController extends Controller{
             e.printStackTrace();
         }
     }
-
 }
