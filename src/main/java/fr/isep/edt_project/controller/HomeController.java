@@ -96,15 +96,14 @@ public class HomeController extends Controller{
     }
 
     public void showCalendarView() {
-        com.calendarfx.view.CalendarView calendarView = new com.calendarfx.view.CalendarView();
-        calendarView.setShowAddCalendarButton(false);
-        calendarView.setShowPrintButton(false);
-
-        com.calendarfx.model.CalendarSource source = new com.calendarfx.model.CalendarSource("EDT ISEP");
-        calendarView.getCalendarSources().add(source);
-
-        centerPane.getChildren().setAll(calendarView);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/isep/edt_project/emploidutemps-view.fxml"));
+            Node emploiView = loader.load();
+            centerPane.getChildren().setAll(emploiView);
+            System.out.println("Emploi du temps affiché !");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
 
 }
