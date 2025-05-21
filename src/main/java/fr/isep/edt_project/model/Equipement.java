@@ -54,9 +54,11 @@ public class Equipement {
         }
     }
 
-    public boolean ajouterEquipements(Connection conn) {
+    public boolean ajouterEquipements() {
         String sql = "INSERT INTO equipement (nom, numero_equipement, type, stock) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (
+                java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, this.nom);
             pstmt.setString(2, this.numeroEquipement);
             pstmt.setString(3, this.type);
@@ -68,9 +70,10 @@ public class Equipement {
             return false;
         }
     }
-    public boolean supprimerEquipements(Connection conn, int id) {
+    public boolean supprimerEquipements(int id) {
         String sql = "DELETE FROM equipement WHERE id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -82,6 +85,10 @@ public class Equipement {
 
     public int getId() {
         return id;
+    }
+
+    public String getStringId(){
+        return String.valueOf(id);
     }
 
     public void setId(int id) {

@@ -59,7 +59,7 @@ public class HomeController extends Controller{
 
     private void openEquipementManagementTool() {
         try {
-            Node equipementView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/equipement-salle-view.fxml"));
+            Node equipementView = FXMLLoader.load(getClass().getResource("/fr/isep/edt_project/equipement-management-view.fxml"));
             centerPane.getChildren().setAll(equipementView);
         } catch (IOException e) {
             e.printStackTrace();
