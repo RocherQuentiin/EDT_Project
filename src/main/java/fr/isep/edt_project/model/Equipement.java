@@ -84,14 +84,49 @@ public class Equipement {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getNumeroEquipement() {
+        return numeroEquipement;
+    }
+
+    public void setNumeroEquipement(String numeroEquipement) {
+        this.numeroEquipement = numeroEquipement;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public String getStockString() {
+        return String.valueOf(stock);
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+
     @Override
     public String toString() {
-        return "Equipement{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", numeroEquipement='" + numeroEquipement + '\'' +
-                ", type='" + type + '\'' +
-                ", stock=" + stock +
-                '}';
+        return nom;
     }
 }

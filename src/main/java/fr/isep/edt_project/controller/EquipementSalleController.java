@@ -3,6 +3,7 @@ package fr.isep.edt_project.controller;
 import fr.isep.edt_project.model.Equipement;
 import fr.isep.edt_project.model.EquipementSalle;
 import fr.isep.edt_project.model.Salle;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +14,6 @@ import java.util.List;
 
 public class EquipementSalleController extends Controller {
 
-    // FXML Elements
     @FXML
     private TableView<Equipement> equipementTable;
 
@@ -24,7 +24,7 @@ public class EquipementSalleController extends Controller {
     private TableColumn<Equipement, String> colEquipementType;
 
     @FXML
-    private TableColumn<Equipement, Integer> colEquipementStock;
+    private TableColumn<Equipement, String> colEquipementStock;
 
     @FXML
     private ComboBox<Salle> salleComboBox;
@@ -38,15 +38,20 @@ public class EquipementSalleController extends Controller {
     @FXML
     private Button deleteEquipementButton;
 
-    // Liste Observable pour les équipements
     private ObservableList<Equipement> equipementList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         // Configurer les colonnes de la table
-        colEquipementNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colEquipementType.setCellValueFactory(new PropertyValueFactory<>("type"));
-        colEquipementStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        colEquipementNom.setCellValueFactory(cellData -> {
+            return new ReadOnlyStringWrapper(cellData.getValue().getNom());
+        });
+        colEquipementType.setCellValueFactory(cellData -> {
+            return new ReadOnlyStringWrapper(cellData.getValue().getType());
+        });
+        colEquipementStock.setCellValueFactory(cellData -> {
+            return new ReadOnlyStringWrapper(cellData.getValue().getStockString());
+        });
 
         // Charger les salles et équipements disponibles
         chargerSalles();
@@ -54,18 +59,25 @@ public class EquipementSalleController extends Controller {
 
         // Listener sur la sélection d'une salle
         salleComboBox.setOnAction(event -> chargerEquipementsSalle());
+        addEquipementButton.setOnAction(event -> ajouterEquipement());
+        deleteEquipementButton.setOnAction(event -> supprimerEquipement());
     }
 
     private void chargerSalles() {
-        // Remplir la liste des salles dans la ComboBox
         List<Salle> salles = Salle.getAllSalles();
-        salleComboBox.setItems(FXCollections.observableArrayList(salles));
+        ObservableList<Salle> salleObservableList = FXCollections.observableArrayList(salles);
+        salleComboBox.setItems(salleObservableList);
+
+        if (!salleObservableList.isEmpty()) {
+            salleComboBox.getSelectionModel().selectFirst();
+            chargerEquipementsSalle(); // Charger les équipements de la première salle par défaut
+        } else {
+            System.out.println("Aucune salle disponible !");
+        }
     }
 
     private void chargerEquipements() {
-        // Charger les équipements dans la ComboBox
         List<Equipement> equipements = Equipement.getAllEquipements();
-        System.out.println(equipements);
         equipementComboBox.setItems(FXCollections.observableArrayList(equipements));
     }
 
@@ -75,6 +87,9 @@ public class EquipementSalleController extends Controller {
             List<Equipement> equipements = EquipementSalle.getEquipementsParSalle(selectedSalle.getId());
             equipementList.setAll(equipements);
             equipementTable.setItems(equipementList);
+        } else {
+            System.out.println("Aucune salle sélectionnée !");
+            equipementTable.getItems().clear(); // Efface les lignes si aucune salle n'est sélectionnée
         }
     }
 
