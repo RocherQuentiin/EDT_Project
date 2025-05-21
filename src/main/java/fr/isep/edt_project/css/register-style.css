@@ -1,0 +1,98 @@
+/* ---- Styles généraux ---- */
+.root {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f7f9fc; /* Fond clair */
+}
+
+/* ---- Conteneur principal (VBox) ---- */
+.vbox {
+    -fx-spacing: 15px;
+    -fx-padding: 20px;
+    -fx-alignment: center;
+    -fx-background-color: #ffffff; /* Arrière-plan blanc */
+    -fx-border-color: #dee2e6; /* Bordure grise claire */
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px; /* Arrondi des coins */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 0); /* Ombre légère */
+}
+
+/* ---- Labels ---- */
+.label {
+    -fx-text-fill: #394867; /* Texte de couleur sombre */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+/* Labels pour les champs individuels */
+.label:first-of-type {
+    -fx-font-size: 18px; /* Taille légèrement plus grande pour le titre */
+    -fx-text-fill: #5a5af3; /* Couleur bleue pour le titre */
+}
+
+/* ---- Champs de texte et mot de passe ---- */
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ced4da; /* Bordure grise neutre */
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #adb5bd; /* Couleur grisée pour le texte d’indication */
+}
+
+/* Effets au survol et focus */
+.text-field:hover, .password-field:hover {
+    -fx-border-color: #008cba; /* Bordure bleue douce au survol */
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #0056b3; /* Bordure bleu foncé au focus */
+    -fx-background-color: #eaf4ff; /* Fond légèrement bleu au focus */
+}
+
+/* ---- Boutons ---- */
+.button {
+    -fx-background-color: #5a5af3; /* Bleu pour les boutons */
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 15px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 0); /* Ombre légère */
+}
+
+.button:hover {
+    -fx-background-color: #3e3eda; /* Bleu plus foncé au survol */
+}
+
+.button:pressed {
+    -fx-background-color: #2c2cac; /* Bleu encore plus sombre en appui */
+}
+
+/* Bouton "Retour" spécifique */
+#backButton {
+    -fx-background-color: #e4e4e4; /* Gris clair */
+    -fx-text-fill: #434343; /* Texte gris foncé */
+}
+
+#backButton:hover {
+    -fx-background-color: #d6d6d6; /* Gris légèrement plus foncé au survol */
+}
+
+#backButton:pressed {
+    -fx-background-color: #bfbfbf; /* Gris foncé en appui */
+}
+
+/* ---- Effet d'animation ---- */
+.button {
+    -fx-transition: background-color 0.3s ease;
+}
+
+.text-field, .password-field {
+    -fx-transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
