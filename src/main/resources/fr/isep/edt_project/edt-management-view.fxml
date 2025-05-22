@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fr.isep.edt_project.controller.EmploiDuTempsManagementController"
+      spacing="10" alignment="CENTER" prefWidth="600" prefHeight="400">
+    
+    <Label text="Créer un emploi du temps" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    
+    <GridPane hgap="10" vgap="10" alignment="CENTER">
+        <Label text="Cours :" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <ComboBox fx:id="coursComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200" />
+
+        <Label text="Utilisateur (Étudiant) :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <ComboBox fx:id="etudiantComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200" />
+
+        <Label text="Ajouté à Emploi du Temps :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TableView fx:id="emploiDuTempsTable" GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="200">
+            <columns>
+                <TableColumn text="Cours" />
+                <TableColumn text="Date" />
+                <TableColumn text="Horaire" />
+            </columns>
+        </TableView>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Ajouter le cours" onAction="#ajouterCours" />
+        <Button text="Retour" onAction="#retour" />
+    </HBox>
+</VBox>

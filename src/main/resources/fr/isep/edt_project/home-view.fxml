@@ -7,7 +7,7 @@
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fr.isep.edt_project.controller.HomeController"
-            stylesheets="@/style.css">
+            stylesheets="@css/style.css">
     <top>
         <HBox alignment="TOP_RIGHT">
             <children>
@@ -19,12 +19,9 @@
                                 <MenuItem fx:id="salleToolButton" mnemonicParsing="false" text="Gestion des Salles" visible="false" />
                                 <MenuItem fx:id="coursToolButton" mnemonicParsing="false" text="Gestion des Cours" visible="false" />
                                 <MenuItem fx:id="userManagemntButton" mnemonicParsing="false" text="Gestion des Utilisateurs" visible="false" />
-                                <MenuItem fx:id="equipementToolButton" mnemonicParsing="false" text="Gestion des Équipements" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Delete" />
+                                <MenuItem fx:id="equipementToolButton" mnemonicParsing="false" text="Gestion des Équipements" visible="false"/>
+                                <MenuItem fx:id="edtToolButton" mnemonicParsing="false" text="Gestion des Emploi du temps" visible="false"/>
+
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Profil">

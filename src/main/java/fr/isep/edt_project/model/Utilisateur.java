@@ -215,6 +215,24 @@ public abstract class Utilisateur {
         return logins;
     }
 
+    public List<Integer> getIdsNonAdministrateurs() {
+        List<Integer> ids = new ArrayList<>();
+        String query = "SELECT id FROM utilisateur " +
+                "WHERE type_utilisateur_id IS NOT NULL " +
+                "AND type_utilisateur_id != (SELECT id FROM typeutilisateur WHERE nom = 'Administrateur')";
+        try (
+                java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
+                PreparedStatement statement = conn.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                ids.add(resultSet.getInt("id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ids;
+    }
+
     public Utilisateur getUserParId(int id) {
         try {
             java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();

@@ -30,6 +30,7 @@ public class Cours {
 
     }
 
+
     // Getters et setters
     public int getId() {
         return id;
@@ -255,4 +256,9 @@ public class Cours {
         return coursList;
     }
 
+    @Override
+    public String toString() {
+        return "matière : " + nom +
+                " horaire : " + horaire;
+    }
 }
