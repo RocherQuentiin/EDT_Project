@@ -21,6 +21,9 @@ public class HomeController extends Controller{
     public MenuItem equipementToolButton;
 
     @FXML
+    public MenuItem edtToolButton;
+
+    @FXML
     private StackPane centerPane;
 
     @FXML
@@ -44,6 +47,7 @@ public class HomeController extends Controller{
         coursToolButton.setOnAction(event -> openCoursManagementTool());
         userManagemntButton.setOnAction(event -> openUserManagementTool());
         equipementToolButton.setOnAction(event -> openEquipementManagementTool());
+        edtToolButton.setOnAction(event -> showManageEDT());
 
 
         // Rendre accessibles les outils qu'aux administrateurs
@@ -51,6 +55,8 @@ public class HomeController extends Controller{
             salleToolButton.setVisible(true);
             coursToolButton.setVisible(true);
             userManagemntButton.setVisible(true);
+            equipementToolButton.setVisible(true);
+            edtToolButton.setVisible(true);
         }
     }
 
@@ -129,6 +135,16 @@ public class HomeController extends Controller{
             System.out.println("Emploi du temps affiché !");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void showManageEDT(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/isep/edt_project/edt-management-view.fxml"));
+            Node edtManagementView = loader.load();
+            centerPane.getChildren().setAll(edtManagementView);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

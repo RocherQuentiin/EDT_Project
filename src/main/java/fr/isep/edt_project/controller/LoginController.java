@@ -52,6 +52,9 @@ public class LoginController extends Controller{
                         1000, 700,
                         "Accueil"
                 );
+                if (utilisateur.getNiveau().equals("1")){
+                    controller.showManageEDT();
+                }
                 controller.showCalendarView(); // Affiche le calendrier
 
             } catch (IOException e) {

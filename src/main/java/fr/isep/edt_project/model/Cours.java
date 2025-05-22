@@ -30,6 +30,7 @@ public class Cours {
 
     }
 
+
     // Getters et setters
     public int getId() {
         return id;

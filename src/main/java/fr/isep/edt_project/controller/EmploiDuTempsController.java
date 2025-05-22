@@ -5,13 +5,12 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import fr.isep.edt_project.Session;
-import fr.isep.edt_project.model.Cours;
-import fr.isep.edt_project.model.Horaire;
-import fr.isep.edt_project.model.Salle;
-import fr.isep.edt_project.model.Etudiant;
+import fr.isep.edt_project.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
+import jdk.jshell.execution.Util;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -51,7 +50,11 @@ public class EmploiDuTempsController implements Initializable {
     private Calendar coursCalendar = new Calendar("Cours");
 
     private void chargerCoursDepuisBDD() {
-        Etudiant etudiant = (Etudiant) Session.getUtilisateurCourant();
+        Utilisateur user = Session.getUtilisateurCourant();
+        if (user.getNiveau() == "1"  || user.getNiveau() == "2") {
+            return;
+        }
+        Etudiant etudiant = (Etudiant) user;
         System.out.println("ID de l'utilisateur connecté : " + etudiant.getId());
 
 
