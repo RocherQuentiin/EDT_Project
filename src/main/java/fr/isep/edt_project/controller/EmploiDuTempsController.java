@@ -50,11 +50,7 @@ public class EmploiDuTempsController implements Initializable {
     private Calendar coursCalendar = new Calendar("Cours");
 
     private void chargerCoursDepuisBDD() {
-        Utilisateur user = Session.getUtilisateurCourant();
-        if (user.getNiveau() == "1"  || user.getNiveau() == "2") {
-            return;
-        }
-        Etudiant etudiant = (Etudiant) user;
+        Etudiant etudiant = (Etudiant) Session.getUtilisateurCourant();
         System.out.println("ID de l'utilisateur connecté : " + etudiant.getId());
 
 

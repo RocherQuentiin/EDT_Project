@@ -61,7 +61,7 @@ public class EmploiDuTempsManagementController extends Controller {
         Integer etudiantId = etudiantComboBox.getSelectionModel().getSelectedItem();
 
         if (coursSelectionne != null && etudiantId != null) {
-            boolean success = EmploiDuTemps.ajouterCours(currentEmploiDuTempsId, coursSelectionne.getId());
+            boolean success = EmploiDuTemps.ajouterCours(currentEmploiDuTempsId, coursSelectionne.getId(), etudiantId);
             if (success) {
                 chargerEmploiDuTemps();
             } else {

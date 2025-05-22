@@ -256,4 +256,9 @@ public class Cours {
         return coursList;
     }
 
+    @Override
+    public String toString() {
+        return "matière : " + nom +
+                " horaire : " + horaire;
+    }
 }

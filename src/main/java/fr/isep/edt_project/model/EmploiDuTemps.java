@@ -23,16 +23,47 @@ public class EmploiDuTemps {
         this.cours = new ArrayList<>();
     }
 
+    public static int creerEmploiDuTempsPourEtudiant(int utilisateurId) {
+        String sql = "INSERT INTO emploidutemps (utilisateur_id) VALUES (?)";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            // Affecter la valeur utilisateurId au paramètre
+            preparedStatement.setInt(1, utilisateurId);
+            System.out.println("preparedStatement : " + preparedStatement + " utilisateurId : " + utilisateurId + " connection : " + connection + " statement : " + sql + "");
+
+            // Exécuter la requête
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Récupérer l'identifiant généré pour ce nouvel emploi du temps
+                try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1); // Retourne l'id généré
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1; // Retourne -1 en cas d'échec de création
+    }
 
 
-    public static boolean ajouterCours(int currentEmploiDuTempsId, int id) {
-        String sql = "INSERT INTO EmploiDuTemps_Cours (emploiDuTemps_id, cours_id) VALUES (?, ?)";
+
+
+    public static boolean ajouterCours(int currentEmploiDuTempsId, int cours_id, int utilisateurId) {
+        if (currentEmploiDuTempsId == -1) {
+            currentEmploiDuTempsId = creerEmploiDuTempsPourEtudiant(utilisateurId);
+        }
+        String sql = "INSERT INTO emploidutemps_cours (emploiDuTemps_id, cours_id) VALUES (?, ?)";
 
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, currentEmploiDuTempsId);
-            stmt.setInt(2, id);
+            stmt.setInt(2, cours_id);
 
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0; // Retourne vrai si une ligne est insérée
