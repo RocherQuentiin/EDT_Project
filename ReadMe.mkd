@@ -1,0 +1,84 @@
+# EDT_Project – Guide d’installation et de démarrage
+
+## CHAPUIS Angeline 
+## ROCHER QUENTIN
+## Prérequis
+
+- **Java 17** ou supérieur
+- **Maven** (ou Gradle) pour la gestion des dépendances
+- **MySQL** (ou MariaDB) pour la base de données
+- Un IDE Java (IntelliJ IDEA, VS Code, Eclipse…)
+
+## 1. Cloner le projet
+
+```bash
+git clone https://github.com/votre-repo/EDT_Project.git
+cd EDT_Project
+```
+
+## 2. Configuration de la base de données
+
+1. **Créer la base de données** (exemple avec MySQL) :
+
+```sql
+CREATE DATABASE edt_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+2. **Importer la structure et les données de test** :
+
+Dans MySQL Workbench ou via la ligne de commande :
+
+```bash
+mysql -u root -p edt_db < src/main/java/fr/isep/edt_project/bdd/mock.sql
+```
+
+3. **Vérifier la configuration de connexion** :
+
+Dans [`src/main/java/fr/isep/edt_project/bdd/DataBaseConnection.java`](src/main/java/fr/isep/edt_project/bdd/DataBaseConnection.java), adapter si besoin :
+
+```java
+private static final String URL = "jdbc:mysql://localhost:3306/edt_db";
+private static final String USER = "root";
+private static final String PASSWORD = "";
+```
+
+## 3. Lancer l’application
+
+### Avec un IDE
+
+- Ouvrir le dossier du projet dans votre IDE.
+- Lancer la classe principale [`HelloApplication.java`](src/main/java/fr/isep/edt_project/HelloApplication.java).
+
+### En ligne de commande
+
+```bash
+mvn clean install
+java -jar target/EDT_Project-1.0-SNAPSHOT.jar
+```
+
+## 4. Connexion
+
+- **Administrateur** :  
+  - Email : `admin@isep.fr`  
+  - Mot de passe : `admin123`
+- **Enseignant** :  
+  - Email : `mdupont@isep.fr`  
+  - Mot de passe : `enseignant123`
+- **Étudiant** :  
+  - Email : `prousseau@isep.fr`  
+  - Mot de passe : `etudiant123`
+
+## 5. Structure du projet
+
+- `src/main/java/fr/isep/edt_project/` : code source Java
+- `src/main/resources/fr/isep/edt_project/` : fichiers FXML et ressources
+- `src/main/java/fr/isep/edt_project/bdd/mock.sql` : données de test
+
+## 6. Personnalisation
+
+- Pour ajouter des utilisateurs, salles, cours, etc., modifiez le fichier `mock.sql` ou utilisez l’interface d’administration de l’application.
+
+---
+
+**Besoin d’aide ?**  
+Contactez l’équipe d'\n (Angeline et Quentin) projet ou ouvrez une issue sur le dépôt GitHub. 
