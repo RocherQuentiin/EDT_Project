@@ -182,7 +182,7 @@ public class EmploiDuTemps {
         }
     }
     public static int recupererEmploiDuTempsIdParEtudiant(Integer etudiantId) {
-        String sql = "SELECT emploiDuTemps_id FROM Etudiant WHERE id = ?";
+        String sql = "SELECT id FROM emploidutemps WHERE utilisateur_id = ?";
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -190,7 +190,7 @@ public class EmploiDuTemps {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("emploiDuTemps_id"); // Retourne l'ID trouvé
+                return rs.getInt("id"); // Retourne l'ID trouvé
             } else {
                 System.out.println("Aucun emploi du temps trouvé pour l'étudiant avec l'ID : " + etudiantId);
                 return -1; // Retourne -1 si aucune correspondance n'est trouvée

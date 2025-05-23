@@ -55,7 +55,9 @@ public class LoginController extends Controller{
                 if (utilisateur.getNiveau().equals("1")){
                     controller.showManageEDT();
                 }
-                controller.showCalendarView(); // Affiche le calendrier
+                else{
+                    controller.showCalendarView(); // Affiche le calendrier
+                }
 
             } catch (IOException e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de revenir à la fenêtre d'authentification !");
