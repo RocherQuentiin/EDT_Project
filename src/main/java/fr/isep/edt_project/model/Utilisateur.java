@@ -17,6 +17,15 @@ public abstract class Utilisateur {
     protected String email;
     protected String motDePasse;
     protected Integer niveau;
+    protected LocalDateTime dateInscription;
+
+    public LocalDateTime getDateInscription() {
+        return dateInscription;
+    }
+
+    public void setDateInscription(LocalDateTime dateInscription) {
+        this.dateInscription = dateInscription;
+    }
 
     public int getId() {
         return id;
@@ -274,7 +283,7 @@ public abstract class Utilisateur {
         if (role.equals("Administrateur")) {
             this.niveau = 1;
         }
-        else if (role.equals("Enseignants")) {
+        else if (role.equals("Enseignant")) {
             this.niveau = 2;
         }
         else {
@@ -287,10 +296,10 @@ public abstract class Utilisateur {
             return "Administrateur";
         }
         else if (this.niveau == 2) {
-            return "Enseignants";
+            return "Enseignant";
         }
         else {
-            return "Etudiants";
+            return "Etudiant";
         }
     }
 }

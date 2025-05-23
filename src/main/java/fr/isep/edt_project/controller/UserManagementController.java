@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import fr.isep.edt_project.bdd.DataBaseConnection;
 import fr.isep.edt_project.model.Utilisateur;
@@ -54,6 +56,7 @@ public class UserManagementController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateInscription"));
 
         // Charger les données dans la TableView
         loadUsers();
@@ -69,16 +72,21 @@ public class UserManagementController {
         userList.clear();
         String query = "SELECT u.id, u.nom, u.email, t.nom as role, u.date_inscription " +
                        "FROM Utilisateur u JOIN TypeUtilisateur t ON u.type_utilisateur_id = t.id";
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet rs = statement.executeQuery()) {
+         try (Connection connection = DataBaseConnection.getConnection();
+              PreparedStatement statement = connection.prepareStatement(query);
+              ResultSet rs = statement.executeQuery()) {
+
+             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             while (rs.next()) {
                 Utilisateur user = new Utilisateur(){};
                 user.setId(rs.getInt("id"));
                 user.setNom(rs.getString("nom"));
                 user.setEmail(rs.getString("email"));
                 user.setRole(rs.getString("role"));
+                user.setDateInscription(LocalDateTime.parse(rs.getString("date_inscription"), formatter));
                 userList.add(user);
+                System.out.println("user = " + user);
+                System.out.println("role = " + user.getRole());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,8 +134,8 @@ public class UserManagementController {
             selectedUser.setRole(roleComboBox.getValue());
 
             // Mise à jour dans la base de données
-            String updateQuery = "UPDATE Utilisateur SET nom = ?, email = ?, type_utilisateur_id = " +
-                                 "(SELECT id FROM TypeUtilisateur WHERE nom = ?) WHERE id = ?";
+            String updateQuery = "UPDATE Utilisateur SET nom = ?, email = ?, type_utilisateur_id =" +
+                                 "(SELECT id as type_utilisateur_id FROM TypeUtilisateur  WHERE nom = ?) WHERE id = ?";
             try (Connection connection = DataBaseConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(updateQuery)) {
                 statement.setString(1, selectedUser.getNom());
