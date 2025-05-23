@@ -115,6 +115,7 @@ public abstract class Utilisateur {
 
     public static Utilisateur getUserByEmail(String email) {
         Utilisateur utilisateur = null;
+        System.out.println(email);
 
         String sql = "SELECT * FROM utilisateur WHERE email = ?";
 
@@ -246,7 +247,7 @@ public abstract class Utilisateur {
         List<Integer> ids = new ArrayList<>();
         String query = "SELECT id FROM utilisateur " +
                 "WHERE type_utilisateur_id IS NOT NULL " +
-                "AND type_utilisateur_id != (SELECT id FROM typeutilisateur WHERE nom = 'Enseignent')";
+                "AND type_utilisateur_id = (SELECT id FROM typeutilisateur WHERE nom = 'Etudiant')";
         try (
                 java.sql.Connection conn = fr.isep.edt_project.bdd.DataBaseConnection.getConnection();
                 PreparedStatement statement = conn.prepareStatement(query);

@@ -50,7 +50,7 @@ public class EmploiDuTempsManagementController extends Controller {
 
     private void chargerEtudiantsDisponibles() {
         Etudiant etudiant = new Etudiant();
-        List<Integer> etudiantsIds = etudiant.getIdsNonAdministrateurs(); // Implémentez cette méthode dans une classe DAO
+        List<Integer> etudiantsIds = etudiant.getIdsEtudiants(); // Implémentez cette méthode dans une classe DAO
         ObservableList<Integer> observableEtudiants = FXCollections.observableArrayList(etudiantsIds);
         etudiantComboBox.setItems(observableEtudiants);
     }
@@ -76,7 +76,6 @@ public class EmploiDuTempsManagementController extends Controller {
             currentEmploiDuTempsId = EmploiDuTemps.recupererEmploiDuTempsIdParEtudiant(etudiantId); // Implémentez cette méthode
             List<Cours> coursList = EmploiDuTemps.recupererCoursParEmploiDuTemps(currentEmploiDuTempsId);
             ObservableList<Cours> observableCours = FXCollections.observableArrayList(coursList);
-            System.out.println(observableCours.toString());
             emploiDuTempsTable.setItems(observableCours);
         }
     }
