@@ -30,7 +30,8 @@ public class EmploiDuTempsController implements Initializable {
         calendarView.setToday(LocalDate.now());
         calendarView.setTime(LocalTime.now());
         calendarView.setShowAddCalendarButton(false);
-        calendarView.setShowPrintButton(false);
+        calendarView.setShowPrintButton(true);
+
 
         CalendarSource source = new CalendarSource("EDT ISEP");
 
