@@ -76,6 +76,7 @@ public class EmploiDuTempsManagementController extends Controller {
             currentEmploiDuTempsId = EmploiDuTemps.recupererEmploiDuTempsIdParEtudiant(etudiantId); // Implémentez cette méthode
             List<Cours> coursList = EmploiDuTemps.recupererCoursParEmploiDuTemps(currentEmploiDuTempsId);
             ObservableList<Cours> observableCours = FXCollections.observableArrayList(coursList);
+            System.out.println(observableCours.toString());
             emploiDuTempsTable.setItems(observableCours);
         }
     }

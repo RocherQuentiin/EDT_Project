@@ -21,6 +21,7 @@ public class Horaire {
         return date;
     }
 
+
     public LocalTime getHeureDebut() {
         return heureDebut;
     }

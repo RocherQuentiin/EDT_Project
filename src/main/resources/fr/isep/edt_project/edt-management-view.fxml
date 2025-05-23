@@ -20,11 +20,11 @@
 
         <Label text="Ajouté à Emploi du Temps :" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <TableView fx:id="emploiDuTempsTable" GridPane.columnIndex="1" GridPane.rowIndex="2" prefHeight="200">
-            <columns>
-                <TableColumn text="Cours" />
-                <TableColumn text="Date" />
-                <TableColumn text="Horaire" />
-            </columns>
+<!--            <columns>-->
+<!--                <TableColumn text="Cours" />-->
+<!--                <TableColumn text="Date" />-->
+<!--                <TableColumn text="Horaire" />-->
+<!--            </columns>-->
         </TableView>
     </GridPane>
 

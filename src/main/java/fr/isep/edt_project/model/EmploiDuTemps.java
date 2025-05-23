@@ -53,23 +53,36 @@ public class EmploiDuTemps {
 
 
 
-    public static boolean ajouterCours(int currentEmploiDuTempsId, int cours_id, int utilisateurId) {
-        if (currentEmploiDuTempsId == -1) {
-            currentEmploiDuTempsId = creerEmploiDuTempsPourEtudiant(utilisateurId);
-        }
-        String sql = "INSERT INTO emploidutemps_cours (emploiDuTemps_id, cours_id) VALUES (?, ?)";
+    public static boolean ajouterCours(int currentEmploiDuTempsId, int coursId, int utilisateurId) {
+        String emploiDuTempsCoursQuery = "INSERT INTO EmploiDuTemps_Cours (emploiDuTemps_id, cours_id) VALUES (?, ?)";
+        String coursEtudiantQuery = "INSERT INTO Cours_Etudiant (cours_id, etudiant_id) VALUES (?, ?)";
 
-        try (Connection conn = DataBaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection connection = DataBaseConnection.getConnection()) {
+            // Définir des transactions pour garantir que les deux requêtes réussissent ensemble
+            connection.setAutoCommit(false);
 
-            stmt.setInt(1, currentEmploiDuTempsId);
-            stmt.setInt(2, cours_id);
+            // Insertion dans la table EmploiDuTemps_Cours
+            try (PreparedStatement emploiDuTempsCoursStmt = connection.prepareStatement(emploiDuTempsCoursQuery)) {
+                emploiDuTempsCoursStmt.setInt(1, currentEmploiDuTempsId);
+                emploiDuTempsCoursStmt.setInt(2, coursId);
+                emploiDuTempsCoursStmt.executeUpdate();
+            }
 
-            int rowsInserted = stmt.executeUpdate();
-            return rowsInserted > 0; // Retourne vrai si une ligne est insérée
+            // Insertion dans la table Cours_Etudiant
+            try (PreparedStatement coursEtudiantStmt = connection.prepareStatement(coursEtudiantQuery)) {
+                coursEtudiantStmt.setInt(1, coursId);
+                coursEtudiantStmt.setInt(2, utilisateurId);
+                coursEtudiantStmt.executeUpdate();
+            }
+
+            // Si tout est réussi, validez la transaction
+            connection.commit();
+            System.out.println("Ajout réussi : Cours ajouté à EmploiDuTemps_Cours et Cours_Etudiant.");
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // En cas d'exception, retourne faux
+            return false;
         }
     }
 
