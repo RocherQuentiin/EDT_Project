@@ -7,11 +7,18 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Horaire {
+    private int id;
     private LocalDate date;
     private LocalTime heureDebut;
     private LocalTime heureFin;
 
     public Horaire(LocalDate date, LocalTime heureDebut, LocalTime heureFin) {
+        this.date = date;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+    }
+    public Horaire(int id, LocalDate date, LocalTime heureDebut, LocalTime heureFin) {
+        this.id = id;
         this.date = date;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;

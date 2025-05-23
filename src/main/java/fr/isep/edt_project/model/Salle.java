@@ -23,6 +23,17 @@ public class Salle {
         this.localisation = localisation;
     }
 
+    public Salle(int id, String numeroSalle, String localisation) {
+        this.id = id;
+        this.numeroSalle = numeroSalle;
+        this.localisation = localisation;
+    }
+
+    public Salle(String numeroSalle, int capacite) {
+        this.numeroSalle = numeroSalle;
+        this.capacite = capacite;
+    }
+
     public Salle() {
 
     }

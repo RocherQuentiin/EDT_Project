@@ -162,7 +162,8 @@ public class Cours {
     // Mettre à jour un cours
     public static boolean modifierCours(Cours cours) {
         String updateCoursQuery = "UPDATE Cours SET nom = ?, enseignant_id = ?, salle_id = ? WHERE id = ?";
-        String updateHoraireQuery = "UPDATE Horaire SET date = ?, heureDebut = ?, heureFin = ? WHERE cours_id = ?";
+        String updateHoraireQuery = "UPDATE Horaire SET date = ?, heureDebut = ?, heureFin = ? " +
+                "WHERE id = (SELECT horaire_id FROM Cours WHERE id = ?)";
         try (Connection connection = DataBaseConnection.getConnection()) {
             connection.setAutoCommit(false); // Start transaction
             try (PreparedStatement updateCoursStmt = connection.prepareStatement(updateCoursQuery);
@@ -249,6 +250,50 @@ public class Cours {
                 coursList.add(cours);
             }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return coursList;
+    }
+
+    public static List<Cours> getCoursByEnseignantId(int enseignantId) {
+        String query = "SELECT c.id, c.nom, c.salle_id, c.horaire_id, s.numero_salle, s.localisation, h.date, h.heureDebut, h.heureFin " +
+                "FROM Cours c " +
+                "JOIN Salle s ON c.salle_id = s.id " +
+                "JOIN Horaire h ON c.horaire_id = h.id " +
+                "WHERE c.enseignant_id = ?";
+        List<Cours> coursList = new ArrayList<>();
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, enseignantId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    // Récupérer les données
+                    int id = rs.getInt("id");
+                    String nom = rs.getString("nom");
+                    int salleId = rs.getInt("salle_id");
+                    String numeroSalle = rs.getString("numero_salle");
+                    String localisation = rs.getString("localisation");
+                    int horaireId = rs.getInt("horaire_id");
+                    LocalDate date = rs.getDate("date").toLocalDate();
+                    LocalTime heureDebut = rs.getTime("heureDebut").toLocalTime();
+                    LocalTime heureFin = rs.getTime("heureFin").toLocalTime();
+
+                    // Créer les objets associés
+                    Salle salle = new Salle(salleId, numeroSalle, localisation);
+                    Horaire horaire = new Horaire(horaireId, date, heureDebut, heureFin);
+
+                    // Créer le cours et l'ajouter à la liste
+                    Cours cours = new Cours();
+                    cours.setId(id);
+                    cours.setNom(nom);
+                    cours.setSalle(salle);
+                    cours.setHoraire(horaire);
+                    coursList.add(cours);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

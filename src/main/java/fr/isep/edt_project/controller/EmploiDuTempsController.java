@@ -14,6 +14,8 @@ import jdk.jshell.execution.Util;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EmploiDuTempsController implements Initializable {
@@ -51,11 +53,25 @@ public class EmploiDuTempsController implements Initializable {
     private Calendar coursCalendar = new Calendar("Cours");
 
     private void chargerCoursDepuisBDD() {
-        Etudiant etudiant = (Etudiant) Session.getUtilisateurCourant();
-        System.out.println("ID de l'utilisateur connecté : " + etudiant.getId());
+        Utilisateur utilisateur = Session.getUtilisateurCourant();
+        System.out.println("ID de l'utilisateur connecté : " + utilisateur.getId());
 
+        List<Cours> coursList;
 
-        for (Cours cours : Cours.getCoursByEtudiantId(etudiant.getId())) {
+        if ("Enseignant".equalsIgnoreCase(utilisateur.getRole())) {
+            // Récupérer les cours assignés à l'enseignant
+            coursList = Cours.getCoursByEnseignantId(utilisateur.getId());
+            System.out.println("Cours pour l'enseignant " + utilisateur.getNom());
+        } else if ("Etudiant".equalsIgnoreCase(utilisateur.getRole())) {
+            // Récupérer les cours d'un étudiant
+            coursList = Cours.getCoursByEtudiantId(utilisateur.getId());
+            System.out.println("Cours pour l'étudiant " + utilisateur.getNom());
+        } else {
+            coursList = new ArrayList<>();
+            System.out.println("Aucun cours disponible pour ce rôle.");
+        }
+
+        for (Cours cours : coursList) {
             System.out.println("Cours récupéré : " + cours.getNom() + " à " + cours.getHoraire().getDate());
             Horaire horaire = cours.getHoraire();
             Salle salle = cours.getSalle();
@@ -63,7 +79,6 @@ public class EmploiDuTempsController implements Initializable {
             System.out.println("Cours chargé : " + cours.getNom());
             System.out.println("Date : " + cours.getHoraire());
             System.out.println("Salle : " + cours.getSalle());
-
 
             Entry<String> entry = new Entry<>(cours.getNom());
             entry.setLocation(salle.getNumeroSalle() + " - " + salle.getLocalisation());
