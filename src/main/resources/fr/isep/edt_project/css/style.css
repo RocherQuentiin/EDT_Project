@@ -109,6 +109,11 @@
     -fx-text-fill: white;
 }
 
+.menu .menu-item:hover {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+}
+
 /* ---- VBox et HBox ---- */
 .vbox, .hbox {
     -fx-spacing: 10px;
